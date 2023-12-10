@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Turbo.az/1.0.0": {
+        "runtime": {
+          "Turbo.az.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Turbo.az/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

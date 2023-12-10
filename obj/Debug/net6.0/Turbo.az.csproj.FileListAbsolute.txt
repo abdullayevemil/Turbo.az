@@ -1,0 +1,15 @@
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\bin\Debug\net6.0\Turbo.az.exe
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\bin\Debug\net6.0\Turbo.az.deps.json
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\bin\Debug\net6.0\Turbo.az.runtimeconfig.json
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\bin\Debug\net6.0\Turbo.az.dll
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\bin\Debug\net6.0\Turbo.az.pdb
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.csproj.AssemblyReference.cache
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.AssemblyInfoInputs.cache
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.AssemblyInfo.cs
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.csproj.CoreCompileInputs.cache
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.dll
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\refint\Turbo.az.dll
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.pdb
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\Turbo.az.genruntimeconfig.cache
+C:\Users\HP\Desktop\Turbo.az app\Turbo.az\obj\Debug\net6.0\ref\Turbo.az.dll
