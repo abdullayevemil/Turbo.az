@@ -5,5 +5,5 @@ public class Vehicle
     public double? Price { get; set; }
     public string? Brand { get; set; }
     public string? Model { get; set; }
-    public double? EngineVolume { get; set; }
+    public int? EngineVolume { get; set; }
 }
