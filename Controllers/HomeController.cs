@@ -1,31 +1,15 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Turbo.az.Models;
+using System.Net;
+using Turbo.az.Controllers.Base;
 
 namespace Turbo.az.Controllers;
-
-public class HomeController : Controller
+public class HomeController : ControllerBase
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    public async Task HomePageAsync(HttpListenerContext context)
     {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        using var writer = new StreamWriter(context.Response.OutputStream);
+        var pageHtml = await File.ReadAllTextAsync("Views/Home.html");
+        await writer.WriteLineAsync(pageHtml);
+        context.Response.StatusCode = (int)HttpStatusCode.OK;
+        context.Response.ContentType = "text/html";
     }
 }
