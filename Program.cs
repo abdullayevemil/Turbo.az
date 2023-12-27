@@ -3,7 +3,7 @@ using System.Reflection;
 using Turbo.az.Attributes.Base;
 using Turbo.az.Controllers;
 using Turbo.az.Controllers.Base;
-
+System.Console.WriteLine("Hello");
 HttpListener httpListener = new HttpListener();
 
 const int port = 8080;
