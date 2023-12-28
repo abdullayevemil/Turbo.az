@@ -1,0 +1,18 @@
+@model IEnumerable<Vehicle>
+
+@{
+    ViewData["Title"] = "All Vehicles";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    @foreach(var vehicle in Model)
+    {
+        <p>Id: @vehicle.Id</p>
+        <p>Brand: @vehicle.Brand</p>
+        <p>Model: @vehicle.Model</p>
+        <p>Price: @vehicle.Price</p>
+        <p>Engine Volume: @vehicle.EngineVolume</p>
+    }
+</div>
