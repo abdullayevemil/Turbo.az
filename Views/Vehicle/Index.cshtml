@@ -6,13 +6,16 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<a href="http://localhost:8080/Vehicle/Create">Create new</a>
+
 <div>
-    @foreach(var vehicle in Model)
+    @foreach (var vehicle in Model)
     {
-        <p>Id: @vehicle.Id</p>
-        <p>Brand: @vehicle.Brand</p>
-        <p>Model: @vehicle.Model</p>
-        <p>Price: @vehicle.Price</p>
-        <p>Engine Volume: @vehicle.EngineVolume</p>
+        <div style="background-color: rgb(221, 221, 221); padding: 10px; border-radius: 20px; margin: 10px;">
+            <p><b>Brand: </b><i>@vehicle.Brand</i></p>
+            <p><b>Model: </b><i>@vehicle.Model</i></p>
+            <p><b>Price: </b><i>@vehicle.Price$</i></p>
+            <p><b>Engine Volume: </b><i>@vehicle.EngineVolume sm<sup>3</sup></i></p>
+        </div>
     }
 </div>

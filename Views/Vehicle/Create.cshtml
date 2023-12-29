@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Create new Vehicle";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a href="http://localhost:8080/Vehicle">Home</a>
+
+<form method="post" action="/Vehicle/Create">
+  <div class="mb-3">
+    <label for="brand" class="form-label">Brand: </label>
+    <input type="text" class="form-control" id="brand" name="brand">
+  </div>
+  <div class="mb-3">
+    <label for="model" class="form-label">Model: </label>
+    <input type="text" class="form-control" id="model" name="model">
+  </div>
+  <div class="mb-3">
+    <label for="price" class="form-label">Price: </label>
+    <input type="number" class="form-control" id="price" name="price">
+  </div>
+  <div class="mb-3">
+    <label for="engine-volume" class="form-label">Engime Volume: </label>
+    <input type="number" class="form-control" id="engine-volume" name="engine-volume">
+  </div>
+  <button type="submit" class="btn btn-success">Create new vehicle</button>
+</form>
