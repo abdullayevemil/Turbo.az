@@ -32,10 +32,11 @@ public class VehicleController : Controller
     public async Task<IActionResult> Create([FromForm]VehicleDto vehicleDto)
     {
         await this.vehicleRepository.InsertVehicleAsync(new Vehicle {
-            Brand = vehicleDto.Brand,
-            Model = vehicleDto.Model,
+            BrandName = vehicleDto.BrandName,
+            ModelName = vehicleDto.ModelName,
             Price = vehicleDto.Price,
             EngineVolume =  vehicleDto.EngineVolume,
+            ImageUrl = vehicleDto.ImageUrl,
         });
 
         return RedirectToAction("Index");

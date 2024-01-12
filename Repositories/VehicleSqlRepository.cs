@@ -6,11 +6,13 @@ using Turbo.az.Repositories.Base;
 namespace Turbo.az.Repositories;
 public class VehicleSqlRepository : IVehicleRepository
 {
-    private const string ConnectionString = "Server=localhost;Database=VehiclesDb;User Id=admin;Password=admin;";
+    private readonly string connectionString;
+
+    public VehicleSqlRepository(string connectionString) => this.connectionString = connectionString;
 
     public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync()
     {
-        using var connection = new SqlConnection(ConnectionString);
+        using var connection = new SqlConnection(connectionString);
 
         var vehicles = await connection.QueryAsync<Vehicle>("select * from Vehicles");
 
@@ -19,10 +21,10 @@ public class VehicleSqlRepository : IVehicleRepository
 
     public async Task InsertVehicleAsync(Vehicle vehicle) 
     {
-        using var connection = new SqlConnection(ConnectionString);
+        using var connection = new SqlConnection(connectionString);
 
         var vehicles = await connection.ExecuteAsync(
-            sql: "insert into Vehicles (Brand, Model, Price, EngineVolume) values (@Brand, @Model, @Price, @EngineVolume);",
+            sql: "insert into Vehicles (BrandName, ModelName, Price, EngineVolume, ImageUrl) values (@BrandName, @ModelName, @Price, @EngineVolume, @ImageUrl);",
             param: vehicle);
     }
 }

@@ -6,16 +6,41 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<a href="http://localhost:8080/Vehicle/Create">Create new</a>
+<a asp-controller="Vehicle" asp-action="Create">Create new</a>
+
+<style>
+    div.vehicle-info {
+        display: flex;
+        flex-direction: row;
+        border: 2px solid white;
+        padding: 10px;
+        border-radius: 20px;
+        margin: 10px
+    }
+    div.vehicle-info > div {
+        display: inline-block;
+        margin-right: 20px;
+    }
+    img {
+        border-radius: 20px;
+        width: 265px;
+        height: 190px;
+    }
+</style>
 
 <div>
     @foreach (var vehicle in Model)
     {
-        <div style="background-color: rgb(221, 221, 221); padding: 10px; border-radius: 20px; margin: 10px;">
-            <p><b>Brand: </b><i>@vehicle.Brand</i></p>
-            <p><b>Model: </b><i>@vehicle.Model</i></p>
-            <p><b>Price: </b><i>@vehicle.Price$</i></p>
-            <p><b>Engine Volume: </b><i>@vehicle.EngineVolume sm<sup>3</sup></i></p>
+        <div class="vehicle-info">
+            <div>
+                <img src="@vehicle.ImageUrl" alt="image of car" />
+            </div>
+            <div>
+                <p><b>Brand: </b><i>@vehicle.BrandName</i></p>
+                <p><b>Model: </b><i>@vehicle.ModelName</i></p>
+                <p><b>Price: </b><i>@vehicle.Price$</i></p>
+                <p><b>Engine Volume: </b><i>@vehicle.EngineVolume sm<sup>3</sup></i></p>
+            </div>
         </div>
     }
 </div>
