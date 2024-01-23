@@ -1,79 +1,38 @@
-﻿using System.Net;
-using System.Reflection;
-using Turbo.az.Attributes.Base;
-using Turbo.az.Controllers;
-using Turbo.az.Controllers.Base;
-System.Console.WriteLine("Hello");
-HttpListener httpListener = new HttpListener();
+using Turbo.az.Repositories;
+using Turbo.az.Repositories.Base;
 
-const int port = 8080;
-httpListener.Prefixes.Add($"http://*:{port}/");
+var builder = WebApplication.CreateBuilder(args);
 
-httpListener.Start();
+builder.Services.AddControllersWithViews();
 
-while (true)
+builder.Services.AddSingleton<IVehicleRepository>(provider => 
 {
-    var context = await httpListener.GetContextAsync();
-    var endpointItems = context.Request.Url?.AbsolutePath?.Split("/", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-    if (endpointItems == null || endpointItems.Any() == false)
-    {
-        await new HomeController().HomePageAsync(context);
-        context.Response.Close();
-        continue;
-    }
-    var controllerType = Assembly.GetExecutingAssembly()
-        .GetTypes()
-        .Where(t => t.BaseType == typeof(ControllerBase))
-        .FirstOrDefault(t => t.Name.ToLower() == $"{endpointItems[0]}controller");
-    if (controllerType == null)
-    {
-        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-        context.Response.Close();
-        continue;
-    }
-    string normalizedRequestHttpMethod = context.Request.HttpMethod.ToLower();
-    var controllerMethod = controllerType
-        .GetMethods()
-        .FirstOrDefault(m =>
-        {
-            return m.GetCustomAttributes()
-                .Any(attr =>
-                {
-                    if (attr is HttpAttribute httpAttribute)
-                    {
-                        bool isHttpMethodCorrect = httpAttribute.MethodType.Method.ToLower() == normalizedRequestHttpMethod;
-                        if (isHttpMethodCorrect)
-                        {
-                            if (endpointItems.Length == 1 && httpAttribute.NormalizedRouting == null)
-                                return true;
-                            else if (endpointItems.Length > 1)
-                            {
-                                if (httpAttribute.NormalizedRouting == null)
-                                    return false;
-                                else
-                                {
-                                    var expectedEndpoint = string.Join('/', endpointItems[1..]).ToLower();
-                                    var actualEndpoint = httpAttribute.NormalizedRouting;
+    string connectionStringName = "VehiclesDb";
 
-                                    return actualEndpoint == expectedEndpoint;
-                                }
-                            }
-                        }
-                    }
-                    return false;
-                });
-        });
-    if (controllerMethod == null)
+    string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
+
+    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString)) 
     {
-        context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-        context.Response.Close();
-        continue;
+        throw new Exception($"connection string {connectionStringName} not found in setting.json");
     }
-    var controller = Activator.CreateInstance(controllerType) as ControllerBase;
-    var methodCall = controllerMethod.Invoke(controller, parameters: new[] { context });
-    if (methodCall != null && methodCall is Task asyncMethod)
-    {
-        await asyncMethod.WaitAsync(CancellationToken.None);
-    }
-    context.Response.Close();
+
+    return new VehicleSqlRepository(connectionString);
+});
+
+var app = builder.Build();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
 }
+
+app.UseHttpsRedirection();
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.MapDefaultControllerRoute();
+
+app.Run();
