@@ -1,6 +1,6 @@
-create database VehiclesDb;
+create database TurboazDb;
 
-use VehiclesDb;
+use TurboazDb;
 
 create table Vehicles 
 (
@@ -10,4 +10,11 @@ create table Vehicles
     [Price] money,
     [EngineVolume] int,
     [ImageUrl] nvarchar(max)
+)
+
+create table Users 
+(
+    [Id] int primary key identity,
+    [Login] nvarchar(100),
+    [Password] nvarchar(100),
 )

@@ -7,7 +7,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddSingleton<IVehicleRepository>(provider => 
 {
-    string connectionStringName = "VehiclesDb";
+    string connectionStringName = "TurboazDb";
 
     string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
 
@@ -17,6 +17,20 @@ builder.Services.AddSingleton<IVehicleRepository>(provider =>
     }
 
     return new VehicleSqlRepository(connectionString);
+});
+
+builder.Services.AddSingleton<IUserRepository>(provider => 
+{
+    string connectionStringName = "TurboazDb";
+
+    string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
+
+    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString)) 
+    {
+        throw new Exception($"connection string {connectionStringName} not found in setting.json");
+    }
+
+    return new UserSqlRepository(connectionString);
 });
 
 var app = builder.Build();
