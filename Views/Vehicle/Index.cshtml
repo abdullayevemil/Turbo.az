@@ -12,7 +12,10 @@
     @foreach (var vehicle in Model)
     {
         <div class="vehicle-info">
-            <img src="@vehicle.ImageUrl" alt="image of car" />
+            @if (@vehicle.ImageUrl is not null)
+            {
+                <img src="@vehicle.ImageUrl" alt="image of car" />
+            }
             <p><b><i>@vehicle.BrandName @vehicle.ModelName</i></b></p>
             <p><i>@vehicle.Price$, @vehicle.EngineVolume sm<sup>3</sup></i></p>
         </div>
