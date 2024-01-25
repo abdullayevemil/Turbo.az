@@ -12,7 +12,7 @@ public class SqlLogger : ICustomLogger
     {
         using var connection = new SqlConnection(connectionString);
         var logs = await connection.ExecuteAsync(
-            sql: "insert into Logs (UserId, Url, StatusCode, RequestBody, ResponseBody) values (@UserId, @Url, @StatusCode, @RequestBody, @ResponseBody);",
+            sql: "insert into Logs (UserId, Url, MethodType, StatusCode, RequestBody, ResponseBody) values (@UserId, @Url, @MethodType, @StatusCode, @RequestBody, @ResponseBody);",
             param: log);
     }
 }
