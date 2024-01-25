@@ -163,6 +163,8 @@ nav.bg-white {
 }
 
 .vehicle-info {
+  width: 265px;
+  height: 190px;
   background-color: rgb(19, 24, 36);
   padding: 10px;
   border-radius: 20px;
