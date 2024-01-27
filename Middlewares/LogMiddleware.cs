@@ -16,61 +16,70 @@ public class LogMiddleware : IMiddleware
     }
     public async Task InvokeAsync(HttpContext httpContext, RequestDelegate next)
     {
-        var methodType = httpContext.Request.Method;
-
-        var url = httpContext.Request.GetDisplayUrl();
-
-        var userId = httpContext.Request.Cookies["Authorize"] is null ? default : Convert.ToInt16(dataProtector.Unprotect(httpContext.Request.Cookies["Authorize"]));
-
-        var requestBody = string.Empty;
-
-        if (httpContext.Request.Body.CanRead)
+        if (!logger.IsLoggingEnabled())
         {
-            if (!httpContext.Request.Body.CanSeek)
+            await next.Invoke(httpContext);
+        }
+        else
+        {
+            var methodType = httpContext.Request.Method;
+
+            var url = httpContext.Request.GetDisplayUrl();
+
+            var userId = httpContext.Request.Cookies["Authorize"] is null ? default : Convert.ToInt16(dataProtector.Unprotect(httpContext.Request.Cookies["Authorize"]));
+
+            var requestBody = string.Empty;
+
+            if (httpContext.Request.Body.CanRead)
             {
-                httpContext.Request.EnableBuffering();
+                if (!httpContext.Request.Body.CanSeek)
+                {
+                    httpContext.Request.EnableBuffering();
+                }
+
+                httpContext.Request.Body.Position = 0;
+
+                StreamReader requestReader = new(httpContext.Request.Body, Encoding.UTF8);
+
+                requestBody = await requestReader.ReadToEndAsync();
+
+                httpContext.Request.Body.Position = 0;
             }
 
-            httpContext.Request.Body.Position = 0;
+            var responseBody = string.Empty;
 
-            StreamReader requestReader = new(httpContext.Request.Body, Encoding.UTF8);
+            Stream originalBody = httpContext.Response.Body;
 
-            requestBody = await requestReader.ReadToEndAsync();
+            using (var memStream = new MemoryStream())
+            {
+                httpContext.Response.Body = memStream;
 
-            httpContext.Request.Body.Position = 0;
+                await next.Invoke(httpContext);
+
+                memStream.Position = 0;
+
+                StreamReader responseReader = new(httpContext.Response.Body, Encoding.UTF8);
+
+                responseBody = await responseReader.ReadToEndAsync();
+
+                memStream.Position = 0;
+
+                await memStream.CopyToAsync(originalBody);
+            }
+
+            var statusCode = httpContext.Response.StatusCode;
+
+            httpContext.Response.Body = originalBody;
+
+            await this.logger.Log(new Models.Log
+            {
+                UserId = userId,
+                Url = url,
+                MethodType = methodType,
+                StatusCode = statusCode,
+                RequestBody = requestBody,
+                ResponseBody = responseBody
+            });
         }
-
-        var responseBody = string.Empty;
-
-        Stream originalBody = httpContext.Response.Body;
-
-        using (var memStream = new MemoryStream())
-        {
-            httpContext.Response.Body = memStream;
-
-            await next.Invoke(httpContext);
-
-            memStream.Position = 0;
-
-            responseBody = new StreamReader(memStream).ReadToEnd();
-
-            memStream.Position = 0;
-
-            await memStream.CopyToAsync(originalBody);
-        }
-        
-        var statusCode = httpContext.Response.StatusCode;
-
-        httpContext.Response.Body = originalBody;
-
-        await this.logger.Log(new Models.Log
-        {
-            UserId = userId,
-            Url = url,
-            MethodType = methodType,
-            StatusCode = statusCode,
-            RequestBody = requestBody,
-            ResponseBody = responseBody
-        });
     }
 }

@@ -18,7 +18,7 @@ html {
 
 .neon:hover {
   background: #03e9f4;
-  color: #050801;
+  color: white !important;
   box-shadow: 0 0 5px #03e9f4,
     0 0 25px #03e9f4,
     0 0 50px #03e9f4,
@@ -163,8 +163,8 @@ nav.bg-white {
 }
 
 .vehicle-info {
-  width: 265px;
-  height: 190px;
+  width: 285px;
+  height: 300px;
   background-color: rgb(19, 24, 36);
   padding: 10px;
   border-radius: 20px;

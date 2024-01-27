@@ -24,7 +24,7 @@ create table Logs
     [LogId] int primary key identity,
     [UserId] int,
     [Url] nvarchar(max),
-    [HttpMethod] nvarchar(20),
+    [MethodType] nvarchar(20),
     [StatusCode] int,
     [RequestBody] nvarchar(max),
     [ResponseBody] nvarchar(max)

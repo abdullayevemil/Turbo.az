@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSingleton<LogMiddleware>();
+builder.Services.AddTransient<LogMiddleware>();
 
 builder.Services.AddSingleton<IVehicleRepository>(provider => 
 {
@@ -38,7 +38,7 @@ builder.Services.AddSingleton<IUserRepository>(provider =>
     return new UserSqlRepository(connectionString);
 });
 
-builder.Services.AddSingleton<ICustomLogger>(provider => 
+builder.Services.AddScoped<ICustomLogger>(provider => 
 {
     string connectionStringName = "TurboazDb";
 
@@ -49,7 +49,9 @@ builder.Services.AddSingleton<ICustomLogger>(provider =>
         throw new Exception($"connection string {connectionStringName} not found in setting.json");
     }
 
-    return new SqlLogger(connectionString);
+    bool isCustomLoggingEnabled = builder.Configuration.GetSection("isCustomLoggingEnabled").Get<bool>();
+
+    return new SqlLogger(connectionString, isCustomLoggingEnabled);
 });
 
 var app = builder.Build();

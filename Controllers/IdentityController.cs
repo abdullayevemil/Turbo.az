@@ -11,6 +11,7 @@ public class IdentityController : Controller
     public IdentityController(IDataProtectionProvider dataProtectionProvider, IUserRepository userRepository)
     {
         this.dataProtector = dataProtectionProvider.CreateProtector("TEST");
+        
         this.userRepository = userRepository;
     }
     
