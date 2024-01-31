@@ -8,10 +8,7 @@ namespace Turbo.az.Controllers;
 public class VehicleController : Controller
 {
     private readonly IVehicleRepository vehicleRepository;
-    public VehicleController(IVehicleRepository vehicleRepository)
-    {
-        this.vehicleRepository = vehicleRepository;
-    }
+    public VehicleController(IVehicleRepository vehicleRepository) => this.vehicleRepository = vehicleRepository;
 
     [HttpGet]
     [ActionName("Index")]
@@ -23,11 +20,8 @@ public class VehicleController : Controller
     }
 
     [HttpGet]
-    public IActionResult Create()
-    {
-        return this.View();
-    }
-    
+    public IActionResult Create() => this.View();
+
     [HttpPost]
     public async Task<IActionResult> Create([FromForm]VehicleDto vehicleDto)
     {
