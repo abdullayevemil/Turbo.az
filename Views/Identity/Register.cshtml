@@ -1,5 +1,7 @@
 @{
     ViewData["Title"] = "Register";
+
+    string email = string.Empty;
     string login = string.Empty;
     string password = string.Empty;
 }
@@ -13,17 +15,25 @@
         <div class="login-header">
             <span>@ViewData["Title"]</span>
         </div>
+
         <form asp-action="Register" method="post">
+            <div class="input-box">
+                <input asp-for="@email" type="email" class="input-field" required>
+                <label asp-for="@email" class="label">Email</label>
+            </div>
+
             <div class="input-box">
                 <input asp-for="@login" type="text" class="input-field" required>
                 <label asp-for="@login" class="label">Login</label>
                 <i class="bx bx-user icon"></i>
             </div>
+
             <div class="input-box">
                 <input asp-for="@password" type="password" class="input-field" autocomplete="off" required>
                 <label asp-for="@password" class="label">Password</label>
                 <i class="bx bx-lock-alt icon" id="show-password"></i>
             </div>
+            
             <div class="input-box">
                 <button type="submit" class="input-submit">Create Account</button>
             </div>

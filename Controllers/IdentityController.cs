@@ -1,38 +1,55 @@
-using Microsoft.AspNetCore.DataProtection;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Dtos;
 using Turbo.az.Repositories.Base;
 
 namespace Turbo.az.Controllers;
+[AllowAnonymous]
 public class IdentityController : Controller
 {
-    private readonly IDataProtector dataProtector;
     private readonly IUserRepository userRepository;
-    public IdentityController(IDataProtectionProvider dataProtectionProvider, IUserRepository userRepository)
-    {
-        this.dataProtector = dataProtectionProvider.CreateProtector("TEST");
-        
-        this.userRepository = userRepository;
-    }
-    
+    public IdentityController(IUserRepository userRepository) => this.userRepository = userRepository;
+
     [HttpGet]
-    public IActionResult Login() => base.View();
+    public IActionResult Login(string? returnUrl)
+    {
+        base.ViewData["returnUrl"] = returnUrl;
+
+        return base.View();
+    }
 
     [HttpGet]
     public IActionResult Register() => base.View();
 
     [HttpPost]
-    public async Task<IActionResult> Login([FromForm] UserDto userDto)
+    public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
     {
-        var foundUser = await userRepository.GetUserByLoginAndPassword(userDto);
+        var foundUser = await userRepository.GetUserByLoginAndPassword(loginDto);
 
         if (foundUser is not null)
         {
-            var userHash = this.dataProtector.Protect(foundUser.Id.ToString());
+            var claims = new Claim[]
+            {
+                new(ClaimTypes.Email, foundUser.Email!),
+                new(ClaimTypes.Name, foundUser.Login!),
+            };
 
-            base.HttpContext.Response.Cookies.Append("Authorize", userHash);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index", "Vehicle");
+            await base.HttpContext.SignInAsync(
+                scheme: CookieAuthenticationDefaults.AuthenticationScheme,
+                principal: new ClaimsPrincipal(claimsIdentity)
+            );
+
+            if (string.IsNullOrWhiteSpace(loginDto.ReturnUrl))
+            {
+                return base.RedirectToAction(controllerName: "Home", actionName: "Index");
+            }
+
+            return base.RedirectPermanent(loginDto.ReturnUrl);
         }
         else
         {
@@ -41,14 +58,24 @@ public class IdentityController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Register([FromForm] UserDto userDto)
+    public async Task<IActionResult> Register([FromForm] RegisterDto registerDto)
     {
-        await userRepository.InsertUserAsync(new Models.User 
+        await userRepository.InsertUserAsync(new Models.User
         {
-            Login = userDto.Login,
-            Password = userDto.Password
+            Email = registerDto.Email,
+            Login = registerDto.Login,
+            Password = registerDto.Password
         });
-        
+
         return base.RedirectToAction("Login");
+    }
+
+    [HttpDelete]
+    [Authorize]
+    public async Task<IActionResult> LogOut()
+    {
+        await base.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        return base.RedirectToAction(actionName: "Login");
     }
 }
