@@ -72,10 +72,5 @@ public class IdentityController : Controller
 
     [HttpDelete]
     [Authorize]
-    public async Task<IActionResult> LogOut()
-    {
-        await base.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-
-        return base.RedirectToAction(actionName: "Login");
-    }
+    public async Task LogOut() => await base.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 }

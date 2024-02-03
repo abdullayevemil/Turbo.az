@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Models;
 
 namespace Turbo.az.Controllers;
-
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
