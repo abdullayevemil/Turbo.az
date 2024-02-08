@@ -5,6 +5,7 @@ using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
 
 namespace Turbo.az.Repositories;
+
 public class UserSqlRepository : IUserRepository
 {
     private readonly string connectionString;

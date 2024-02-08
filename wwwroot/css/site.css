@@ -400,10 +400,26 @@ a:hover {
 }
 
 .main-info,
-.user-info {
+.user-info,
+.vehicle-details {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 20px;
   padding: 15px;
   font-size: 20px;
   color: white;
+}
+
+.vehicle-details {
+  display: flex;
+  flex-direction: row;
+}
+
+.vehicle-details > p {
+  display: inline;
+}
+
+.details-image {
+  width: 600px;
+  height: 400px;
+  margin-right: 40px;
 }

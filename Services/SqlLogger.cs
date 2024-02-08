@@ -4,10 +4,13 @@ using Turbo.az.Models;
 using Turbo.az.Services.Base;
 
 namespace Turbo.az.Services;
+
 public class SqlLogger : ICustomLogger
 {
     private readonly string connectionString;
+
     private readonly bool isLoggingEnabled;
+    
     public SqlLogger(string connectionString, bool isLoggingEnabled)
     {
         this.connectionString = connectionString;

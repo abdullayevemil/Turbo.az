@@ -2,6 +2,18 @@ create database TurboazDb;
 
 use TurboazDb;
 
+create table TransmissionTypes
+(
+    [Id] int primary key identity,
+    [Type] nvarchar(max)
+)
+
+create table Drivetrains
+(
+    [Id] int primary key identity,
+    [Type] nvarchar(max)
+)
+
 create table Vehicles 
 (
     [Id] int primary key identity,
@@ -10,6 +22,11 @@ create table Vehicles
     [Price] money,
     [EngineVolume] int,
     [ImageUrl] nvarchar(max),
+    [HorsePowers] int,
+    [SeatsCount] int,
+    [Color] nvarchar(100),
+    [TransmissionType] int foreign key references TransmissionTypes(Id) on delete cascade,
+    [Drivetrain] int foreign key references Drivetrains(Id) on delete cascade,
 )
 
 create table Users 

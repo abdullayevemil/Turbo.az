@@ -1,4 +1,5 @@
 namespace Turbo.az.Dtos;
+
 public class LoginDto
 {
     public string? Login { get; set; }

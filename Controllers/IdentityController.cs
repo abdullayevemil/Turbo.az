@@ -7,6 +7,7 @@ using Turbo.az.Dtos;
 using Turbo.az.Repositories.Base;
 
 namespace Turbo.az.Controllers;
+
 [AllowAnonymous]
 public class IdentityController : Controller
 {
@@ -53,7 +54,7 @@ public class IdentityController : Controller
         }
         else
         {
-            return BadRequest("Incorrect login or password!");
+            return base.BadRequest("Incorrect login or password!");
         }
     }
 

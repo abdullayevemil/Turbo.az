@@ -1,4 +1,5 @@
 namespace Turbo.az.Models;
+
 public class Vehicle
 {
     public int Id { get; set; }
@@ -7,4 +8,9 @@ public class Vehicle
     public string? ModelName { get; set; }
     public int? EngineVolume { get; set; }
     public string? ImageUrl { get; set; }
+    public int? HorsePowers { get; set; }
+    public int? SeatsCount { get; set; }
+    public string? Color { get; set; }
+    public TransmissionType? TransmissionType { get; set; }
+    public Drivetrain? Drivetrain { get; set; }
 }

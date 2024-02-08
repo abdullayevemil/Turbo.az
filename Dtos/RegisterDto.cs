@@ -1,4 +1,5 @@
 namespace Turbo.az.Dtos;
+
 public class RegisterDto
 {
     public string? Email { get; set; }
