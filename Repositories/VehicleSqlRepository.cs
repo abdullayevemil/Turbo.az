@@ -20,16 +20,7 @@ public class VehicleSqlRepository : IVehicleRepository
         return vehicles;
     }
 
-    public async Task InsertVehicleAsync(Vehicle vehicle)
-    {
-        using var connection = new SqlConnection(connectionString);
-
-        var vehicles = await connection.ExecuteAsync(
-            sql: "insert into Vehicles (BrandName, ModelName, Price, EngineVolume, ImageUrl, HorsePowers, SeatsCount, Color, TransmissionType, Drivetrain) values (@BrandName, @ModelName, @Price, @EngineVolume, @ImageUrl, @HorsePowers, @SeatsCount, @Color, @TransmissionType, @Drivetrain);",
-            param: vehicle);
-    }
-
-    public async Task<Vehicle?> GetVehicleById(int id)
+    public async Task<Vehicle?> GetVehicleByIdAsync(int id)
     {
         using var connection = new SqlConnection(connectionString);
 
@@ -38,7 +29,27 @@ public class VehicleSqlRepository : IVehicleRepository
                 param: new { Id = id });
 
         var vehicle = vehicles.FirstOrDefault();
-        
+
         return vehicle;
+    }
+
+    public async Task<IEnumerable<Vehicle?>> GetUserVehiclesAsync(string userLogin)
+    {
+        using var connection = new SqlConnection(connectionString);
+
+        var userVehicles = await connection.QueryAsync<Vehicle>(
+            sql: "select * from Vehicles where UserLogin=@UserLogin",
+            param: new { UserLogin = userLogin });
+
+        return userVehicles;
+    }
+
+    public async Task InsertVehicleAsync(Vehicle vehicle)
+    {
+        using var connection = new SqlConnection(connectionString);
+
+        var vehicles = await connection.ExecuteAsync(
+            sql: "insert into Vehicles (UserLogin, BrandName, ModelName, Price, EngineVolume, ImageUrl, HorsePowers, SeatsCount, Color, TransmissionType, Drivetrain) values (@UserLogin, @BrandName, @ModelName, @Price, @EngineVolume, @ImageUrl, @HorsePowers, @SeatsCount, @Color, @TransmissionType, @Drivetrain);",
+            param: vehicle);
     }
 }

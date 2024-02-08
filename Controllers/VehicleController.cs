@@ -1,3 +1,5 @@
+#pragma warning disable CS8604
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Dtos;
@@ -29,19 +31,34 @@ public class VehicleController : Controller
     [Route("[controller]/Index/{id}")]
     public async Task<IActionResult> ShowVehicleDetails(int id)
     {
-        var selectedVehicle = await vehicleRepository.GetVehicleById(id);
+        var selectedVehicle = await vehicleRepository.GetVehicleByIdAsync(id);
 
         return base.View(model: selectedVehicle);
     }
 
     [HttpGet]
+    [ActionName("UserVehicles")]
+    [Route("[controller]/UserVehicles")]
+    public async Task<IActionResult> ShowUserVehicles()
+    {
+        var userLogin = base.HttpContext.User.Identity!.Name;
+
+        var userVehicles = await vehicleRepository.GetUserVehiclesAsync(userLogin);
+
+        return base.View(model: userVehicles);
+    }
+
+    [HttpGet]
+    [Route("[controller]/[action]")]
     public IActionResult Create() => base.View();
 
     [HttpPost]
+    [Route("[controller]/[action]")]
     public async Task<IActionResult> Create([FromForm] VehicleDto vehicleDto)
     {
         await this.vehicleRepository.InsertVehicleAsync(new Vehicle
         {
+            UserLogin = base.HttpContext.User.Identity!.Name,
             BrandName = vehicleDto.BrandName,
             ModelName = vehicleDto.ModelName,
             Price = vehicleDto.Price,
@@ -51,7 +68,7 @@ public class VehicleController : Controller
             SeatsCount = vehicleDto.SeatsCount,
             Color = vehicleDto.Color,
             TransmissionType = vehicleDto.TransmissionType,
-            Drivetrain = vehicleDto.Drivetrain
+            Drivetrain = vehicleDto.Drivetrain,
         });
 
         return base.RedirectToAction("Index");

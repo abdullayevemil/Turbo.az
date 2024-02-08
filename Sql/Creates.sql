@@ -14,9 +14,18 @@ create table Drivetrains
     [Type] nvarchar(max)
 )
 
+create table Users 
+(
+    [Id] int primary key identity,
+    [Email] nvarchar(100),
+    [Login] nvarchar(100),
+    [Password] nvarchar(100),
+)
+
 create table Vehicles 
 (
     [Id] int primary key identity,
+    [UserLogin] nvarchar(100),
     [BrandName] nvarchar(100),
     [ModelName] nvarchar(100),
     [Price] money,
@@ -27,14 +36,6 @@ create table Vehicles
     [Color] nvarchar(100),
     [TransmissionType] int foreign key references TransmissionTypes(Id) on delete cascade,
     [Drivetrain] int foreign key references Drivetrains(Id) on delete cascade,
-)
-
-create table Users 
-(
-    [Id] int primary key identity,
-    [Email] nvarchar(100),
-    [Login] nvarchar(100),
-    [Password] nvarchar(100),
 )
 
 create table Logs
