@@ -1,5 +1,5 @@
-using System.Data.SqlClient;
-using Dapper;
+using Microsoft.EntityFrameworkCore;
+using Turbo.az.Data;
 using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
 
@@ -7,49 +7,30 @@ namespace Turbo.az.Repositories;
 
 public class VehicleSqlRepository : IVehicleRepository
 {
-    private readonly string connectionString;
+    private readonly MyDbContext dbContext;
 
-    public VehicleSqlRepository(string connectionString) => this.connectionString = connectionString;
+    public VehicleSqlRepository(MyDbContext dbContext) => this.dbContext = dbContext;
 
-    public async Task<IEnumerable<Vehicle>> GetAllVehiclesAsync()
-    {
-        using var connection = new SqlConnection(connectionString);
-
-        var vehicles = await connection.QueryAsync<Vehicle>("select * from Vehicles");
-
-        return vehicles;
-    }
+    public IEnumerable<Vehicle> GetAllVehicles() => this.dbContext.Vehicles.AsEnumerable();
 
     public async Task<Vehicle?> GetVehicleByIdAsync(int id)
     {
-        using var connection = new SqlConnection(connectionString);
-
-        var vehicles = await connection.QueryAsync<Vehicle>(
-                sql: "select * from Vehicles where Id=@Id",
-                param: new { Id = id });
-
-        var vehicle = vehicles.FirstOrDefault();
+        var vehicle = await this.dbContext.Vehicles.FirstOrDefaultAsync(vehicle => vehicle.Id == id);
 
         return vehicle;
     }
 
-    public async Task<IEnumerable<Vehicle?>> GetUserVehiclesAsync(string userLogin)
+    public IEnumerable<Vehicle?> GetUserVehicles(string userLogin)
     {
-        using var connection = new SqlConnection(connectionString);
-
-        var userVehicles = await connection.QueryAsync<Vehicle>(
-            sql: "select * from Vehicles where UserLogin=@UserLogin",
-            param: new { UserLogin = userLogin });
+        var userVehicles = dbContext.Vehicles.Where(vehicle => vehicle.UserLogin == userLogin).AsEnumerable();
 
         return userVehicles;
     }
 
     public async Task InsertVehicleAsync(Vehicle vehicle)
     {
-        using var connection = new SqlConnection(connectionString);
+        await this.dbContext.Vehicles.AddAsync(vehicle);
 
-        var vehicles = await connection.ExecuteAsync(
-            sql: "insert into Vehicles (UserLogin, BrandName, ModelName, Price, EngineVolume, ImageUrl, HorsePowers, SeatsCount, Color, TransmissionType, Drivetrain) values (@UserLogin, @BrandName, @ModelName, @Price, @EngineVolume, @ImageUrl, @HorsePowers, @SeatsCount, @Color, @TransmissionType, @Drivetrain);",
-            param: vehicle);
+        await this.dbContext.SaveChangesAsync();
     }
 }

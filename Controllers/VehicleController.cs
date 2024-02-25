@@ -18,9 +18,9 @@ public class VehicleController : Controller
     [ActionName("Index")]
     [Route("[controller]")]
     [Route("[controller]/[action]")]
-    public async Task<IActionResult> ShowAllVehicles()
+    public IActionResult ShowAllVehicles()
     {
-        var vehicles = await this.vehicleRepository.GetAllVehiclesAsync();
+        var vehicles = this.vehicleRepository.GetAllVehicles();
 
         return base.View(model: vehicles);
     }
@@ -39,11 +39,11 @@ public class VehicleController : Controller
     [HttpGet]
     [ActionName("UserVehicles")]
     [Route("[controller]/UserVehicles")]
-    public async Task<IActionResult> ShowUserVehicles()
+    public IActionResult ShowUserVehicles()
     {
         var userLogin = base.HttpContext.User.Identity!.Name;
 
-        var userVehicles = await vehicleRepository.GetUserVehiclesAsync(userLogin);
+        var userVehicles = vehicleRepository.GetUserVehicles(userLogin);
 
         return base.View(model: userVehicles);
     }

@@ -1,0 +1,29 @@
+@model IEnumerable<Vehicle>
+
+@{
+    var userLogin = base.Context.User.Identity!.Name;
+
+    var title = userLogin + "'s " + "Vehicles";
+
+    ViewData["Title"] = title;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a asp-controller="Vehicle" asp-action="Index">All vehicles</a>
+
+<div class="vehicles-container">
+    @foreach (var vehicle in Model)
+    {
+        <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@vehicle.Id">
+            <div class="vehicle-info">
+                @if (@vehicle.ImageUrl is not null)
+                {
+                    <img src="@vehicle.ImageUrl" alt="image of car" />
+                }
+                <p><b><i>@vehicle.BrandName @vehicle.ModelName</i></b></p>
+                <p><i>@vehicle.Price$, @vehicle.EngineVolume sm<sup>3</sup></i></p>
+            </div>
+        </a>
+    }
+</div>
