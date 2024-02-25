@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Turbo.az.Data;
 using Turbo.az.Middlewares;
@@ -11,31 +12,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<MyDbContext>(dbContextOptionsBuilder =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("TurboazDb");
-
-    dbContextOptionsBuilder.UseSqlServer(connectionString);
-});
-
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Identity/Login";
-        options.ReturnUrlParameter = "returnUrl";
-    });
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddTransient<LogMiddleware>();
 
 builder.Services.AddScoped<IVehicleRepository, VehicleSqlRepository>();
 
-builder.Services.AddScoped<IUserRepository, UserSqlRepository>();
-
 builder.Services.AddScoped<ILogRepository, LogSqlRepository>();
 
 builder.Services.AddScoped<ICustomLogger, SqlLogger>();
+
+builder.Services.AddScoped<IIdentityService, IdentityService>();
+
+builder.Services.AddDbContext<MyDbContext>(dbContextOptionsBuilder =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("TurboazDb");
+    dbContextOptionsBuilder.UseSqlServer(connectionString);
+});
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequireNonAlphanumeric = true;
+})
+    .AddEntityFrameworkStores<MyDbContext>();
 
 var app = builder.Build();
 

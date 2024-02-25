@@ -4,22 +4,25 @@
     ViewData["Title"] = "User Info";
 
     var claimTypes = new Dictionary<string, string>
-        {
-            {ClaimTypes.Name , "Login"},
-            {ClaimTypes.Email , "Email adress"}
-        };
+{
+{ClaimTypes.Name , "Login"},
+{ClaimTypes.Email , "Email adress"}
+};
 }
 
 <div class="text-center user-info">
-    User information: 
+    User information:
     <br>
     <br>
     @foreach (var claim in Model)
     {
-        <div>
-            <label>@claimTypes[@claim.Type]</label>: 
-            <label>@claim.Value</label>
-        </div>
-        <br>
+        @if (claimTypes.Keys.Contains<string>(claim.Type))
+        {
+            <div>
+                <label>@claimTypes[@claim.Type]</label>:
+                <label>@claim.Value</label>
+            </div>
+            <br>
+        }
     }
 </div>

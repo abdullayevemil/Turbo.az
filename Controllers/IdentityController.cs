@@ -1,77 +1,63 @@
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Turbo.az.CustomExceptions;
 using Turbo.az.Dtos;
-using Turbo.az.Repositories.Base;
+using Turbo.az.Services.Base;
 
 namespace Turbo.az.Controllers;
 
 [AllowAnonymous]
 public class IdentityController : Controller
 {
-    private readonly IUserRepository userRepository;
-    public IdentityController(IUserRepository userRepository) => this.userRepository = userRepository;
+    private readonly IIdentityService identityService;
+
+    public IdentityController(IIdentityService identityService) => this.identityService = identityService;
 
     [HttpGet]
-    public IActionResult Login(string? returnUrl)
-    {
-        base.ViewData["returnUrl"] = returnUrl;
+    public IActionResult Login() => base.View();
 
-        return base.View();
+    [HttpPost]
+    public async Task<IActionResult> Login([FromForm] LoginDto dto)
+    {
+        try
+        {
+            await this.identityService.LoginAsync(dto);
+        }
+        catch (Exception exception) when (exception is NotFoundException || exception is ArgumentException)
+        {
+            return base.BadRequest(exception.Message);
+        }
+
+        return base.RedirectToAction(actionName: "Index", controllerName: "Home");
     }
 
     [HttpGet]
     public IActionResult Register() => base.View();
 
     [HttpPost]
-    public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
+    public async Task<IActionResult> Register([FromForm] RegisterDto dto)
     {
-        var foundUser = await userRepository.GetUserByLoginAndPassword(loginDto);
+        var result = await this.identityService.RegisterAsync(dto);
 
-        if (foundUser is not null)
+        if (!result.Succeeded)
         {
-            var claims = new Claim[]
+            foreach (var error in result.Errors)
             {
-                new(ClaimTypes.Email, foundUser.Email!),
-                new(ClaimTypes.Name, foundUser.Login!),
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await base.HttpContext.SignInAsync(
-                scheme: CookieAuthenticationDefaults.AuthenticationScheme,
-                principal: new ClaimsPrincipal(claimsIdentity)
-            );
-
-            if (string.IsNullOrWhiteSpace(loginDto.ReturnUrl))
-            {
-                return base.RedirectToAction(controllerName: "Home", actionName: "Index");
+                base.ModelState.AddModelError(error.Code, error.Description);
             }
 
-            return base.RedirectPermanent(loginDto.ReturnUrl);
+            return base.View("Register");
         }
-        else
-        {
-            return base.BadRequest("Incorrect login or password!");
-        }
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Register([FromForm] RegisterDto registerDto)
-    {
-        await userRepository.InsertUserAsync(new Models.User
-        {
-            Email = registerDto.Email,
-            Login = registerDto.Login,
-            Password = registerDto.Password
-        });
 
         return base.RedirectToAction("Login");
     }
 
     [HttpDelete]
     [Authorize]
-    public async Task LogOut() => await base.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+    public async Task<IActionResult> Logout()
+    {
+        await this.identityService.LogOutAsync();
+
+        return base.Ok();
+    }
 }
