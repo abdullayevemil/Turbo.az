@@ -37,7 +37,7 @@ public class IdentityController : Controller
     [HttpPost]
     public async Task<IActionResult> Register([FromForm] RegisterDto dto)
     {
-        var result = await this.identityService.RegisterAsync(dto);
+        var result = await this.identityService.RegisterAsync(dto, "admin", "Admin");
 
         if (!result.Succeeded)
         {

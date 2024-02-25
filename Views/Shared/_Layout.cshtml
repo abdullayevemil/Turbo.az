@@ -1,5 +1,7 @@
 ﻿@{
     bool isAuthenticated = base.User.Identity.IsAuthenticated;
+
+    bool isAdmin = base.User.IsInRole("Admin");
 }
 
 <!DOCTYPE html>
@@ -51,6 +53,18 @@
                                     Vehicles
                                 </a>
                             </li>
+                            @if (isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="neon nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        Users
+                                    </a>
+                                </li>
+                            }
                         }
                         else
                         {

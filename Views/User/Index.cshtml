@@ -1,0 +1,18 @@
+@model IEnumerable<IdentityUser>
+
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    @foreach (var user in Model)
+    {
+        <div class="user-details">
+            <p><b>Login: </b>@user.UserName</p>
+            <br>
+            <p><b>Email: </b>@user.Email</p>
+        </div>
+    }
+</div>

@@ -37,14 +37,9 @@ public class IdentityService : IIdentityService
         {
             throw new ArgumentException("Login process did not succeed, something went wrong!");
         }
-
-        if (loginDto.Login == "Admin" && loginDto.Password == "Admin123!")
-        {
-            await this.AddRoleToUserAsync(user, "Admin");
-        }
     }
 
-    public async Task<IdentityResult> RegisterAsync(RegisterDto registerDto)
+    public async Task<IdentityResult> RegisterAsync(RegisterDto registerDto, string key, string roleType)
     {
         var newUser = new IdentityUser
         {
@@ -53,6 +48,11 @@ public class IdentityService : IIdentityService
         };
 
         var result = await this.userManager.CreateAsync(newUser, registerDto.Password!);
+
+        if (registerDto.Login!.ToLower().Contains(key))
+        {
+            await this.AddRoleToUserAsync(newUser, roleType);
+        }
 
         return result;
     }

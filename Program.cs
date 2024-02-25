@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Turbo.az.Data;
@@ -19,6 +18,8 @@ builder.Services.AddTransient<LogMiddleware>();
 builder.Services.AddScoped<IVehicleRepository, VehicleSqlRepository>();
 
 builder.Services.AddScoped<ILogRepository, LogSqlRepository>();
+
+builder.Services.AddScoped<IUserRepository, UserSqlRepository>();
 
 builder.Services.AddScoped<ICustomLogger, SqlLogger>();
 
