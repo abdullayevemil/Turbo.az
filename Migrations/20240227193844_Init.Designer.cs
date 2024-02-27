@@ -12,7 +12,7 @@ using Turbo.az.Data;
 namespace Turbo.az.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240227074631_Init")]
+    [Migration("20240227193844_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -196,9 +196,6 @@ namespace Turbo.az.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("BanExpirationDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

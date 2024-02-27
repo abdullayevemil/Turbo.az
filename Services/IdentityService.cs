@@ -32,6 +32,11 @@ public class IdentityService : IIdentityService
             throw new NotFoundException($"{loginDto.Login} was not found in the database!");
         }
 
+        if (user.IsBanned)
+        {
+            throw new ArgumentException($"{loginDto.Login} was banned!");
+        }
+
         var result = await this.signInManager.PasswordSignInAsync(user, loginDto.Password!, true, true);
 
         if (!result.Succeeded)
@@ -51,6 +56,7 @@ public class IdentityService : IIdentityService
         {
             Email = registerDto.Email,
             UserName = registerDto.Login,
+            IsBanned = false
         };
 
         var result = await this.userManager.CreateAsync(newUser, registerDto.Password!);

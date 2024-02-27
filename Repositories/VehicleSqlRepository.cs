@@ -1,7 +1,5 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Turbo.az.Data;
-using Turbo.az.Migrations;
 using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
 
@@ -75,7 +73,7 @@ public class VehicleSqlRepository : IVehicleRepository
     {
         var vehicleToUpdate = await this.dbContext.Vehicles.FirstOrDefaultAsync(vehicle => vehicle.Id == id);
 
-        InitializeVehicle(vehicleToUpdate, newVehicle);
+        InitializeVehicle(vehicleToUpdate!, newVehicle);
 
         await this.dbContext.SaveChangesAsync();
     }

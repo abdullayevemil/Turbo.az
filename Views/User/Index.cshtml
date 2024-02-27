@@ -1,7 +1,9 @@
-@model IEnumerable<IdentityUser>
+@model IEnumerable<User>
 
 @{
     ViewData["Title"] = "All Users";
+
+    bool isAdmin = base.User.IsInRole("Admin");
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -16,13 +18,29 @@
                 <br>
                 <p><b>Email: </b>@user.Email</p>
                 <br>
-                <select name="ba-date" id="ban-date">
-                    Select the period of ban
-                    <option value=7>7 days</option>
-                    <option value=30>30 days</option>
-                    <option value=-1>Forever</option>
-                </select>
+                @if (user.IsBanned)
+                {
+                    <a class="link" onclick="banUser('@user.Id')" id="link-@user.Id">
+                        activate user account
+                    </a>
+                }
+                else
+                {
+                    <a class="link" onclick="banUser('@user.Id')" id="link-@user.Id">
+                        ban user account
+                    </a>
+                }
+                <br>
+                <br>
+                @if (isAdmin)
+                {
+                    <a class="link" onclick="deleteUser('@user.Id')" id="delete-user-link">
+                        <i class="fa fa-trash" style="font-size:24px"></i>
+                    </a>
+                }
             </div>
         }
     }
 </div>
+
+<script src="~/js/user-operations.js"></script>

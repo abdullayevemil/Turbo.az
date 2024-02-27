@@ -29,4 +29,22 @@ public class UserController : Controller
 
         return base.View(model: users);
     }
+
+    [HttpPost]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Ban(string id)
+    {
+        await this.userRepository.BanUserAsync(id);
+
+        return base.Ok();
+    }
+
+    [HttpDelete]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await this.userRepository.DeleteUserAsync(id);
+
+        return base.Ok();
+    }
 }
