@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.CustomExceptions;
 using Turbo.az.Dtos;
@@ -37,14 +38,11 @@ public class IdentityController : Controller
     [HttpPost]
     public async Task<IActionResult> Register([FromForm] RegisterDto dto)
     {
-        var result = await this.identityService.RegisterAsync(dto, "admin", "Admin");
+        var result = await this.identityService.RegisterAsync(dto);
 
         if (!result.Succeeded)
         {
-            foreach (var error in result.Errors)
-            {
-                base.ModelState.AddModelError(error.Code, error.Description);
-            }
+            AddErrorsToModelState(result.Errors);
 
             return base.View("Register");
         }
@@ -59,5 +57,13 @@ public class IdentityController : Controller
         await this.identityService.LogOutAsync();
 
         return base.Ok();
+    }
+
+    private void AddErrorsToModelState(IEnumerable<IdentityError> errors)
+    {
+        foreach (var error in errors)
+        {
+            base.ModelState.AddModelError(error.Code, error.Description);
+        }
     }
 }

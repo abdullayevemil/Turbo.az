@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Identity;
+using Turbo.az.Models;
 
 namespace Turbo.az.Repositories.Base;
 
 public interface IUserRepository
 {
-    IEnumerable<IdentityUser> GetAllUsers();
+    IEnumerable<User> GetAllUsers();
 }

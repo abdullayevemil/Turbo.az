@@ -5,7 +5,7 @@ using Turbo.az.Models;
 
 namespace Turbo.az.Data;
 
-public class MyDbContext : IdentityDbContext<IdentityUser, IdentityRole, string>
+public class MyDbContext : IdentityDbContext<User, IdentityRole, string>
 {
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Log> Logs { get; set; }

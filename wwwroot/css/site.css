@@ -8,6 +8,14 @@ html {
   }
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
@@ -164,7 +172,7 @@ nav.bg-white {
 
 .vehicle-info {
   width: 285px;
-  height: 300px;
+  height: 330px;
   background-color: rgb(19, 24, 36);
   padding: 10px;
   border-radius: 20px;
@@ -415,7 +423,7 @@ a:hover {
   flex-direction: row;
 }
 
-.vehicle-details,
+.vehicle-details > p,
 .user-details > p {
   display: inline;
 }
@@ -428,4 +436,54 @@ a:hover {
 
 .user-details {
   margin: 20px 0;
+}
+
+select {
+  width: 170px;
+  font-size: 22px !important; 
+}
+
+.select-label {
+  margin-left: 120px;
+}
+
+select:nth-of-type(2) {
+  margin-left: 80px;
+}
+
+.submit-button {
+  width: 200px;
+  height: 40px;
+  position: relative;
+  display: inline-block;
+  margin: 8px 0;
+  background-color: transparent;
+  color: #03e9f4 !important;
+  text-decoration: none;
+  transition: 0.5s;
+  overflow: hidden;
+  border: 1px #03e9f4 solid;
+}
+
+.submit-button:hover {
+  background: #03e9f4;
+  color: white !important;
+  box-shadow: 0 0 5px #03e9f4,
+    0 0 25px #03e9f4,
+    0 0 50px #03e9f4,
+    0 0 200px #03e9f4;
+}
+
+.back-link {
+  font-size: 20px;
+}
+
+.back-link:hover {
+  text-decoration: none;
+  color: #03e9f4 !important;
+}
+
+a.link:hover {
+  text-decoration: none;
+  color: #03e9f4 !important;
 }

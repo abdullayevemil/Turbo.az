@@ -1,15 +1,20 @@
 @model IEnumerable<Vehicle>
 
 @{
+    bool isAuthenticated = base.User.Identity.IsAuthenticated;
+
     ViewData["Title"] = "All Vehicles";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<a asp-controller="Vehicle" asp-action="Create">Create new vehicle</a>
-<br>
-<br>
-<a asp-controller="Vehicle" asp-action="UserVehicles">My vehicles</a>
+@if (isAuthenticated)
+{
+    <a asp-controller="Vehicle" asp-action="Create">Create new vehicle</a>
+    <br>
+    <br>
+    <a asp-controller="Vehicle" asp-action="UserVehicles">My vehicles</a>
+}
 
 <div class="vehicles-container">
     @foreach (var vehicle in Model)

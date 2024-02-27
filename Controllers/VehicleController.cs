@@ -3,8 +3,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Dtos;
-using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
+using Turbo.az.Services;
 
 namespace Turbo.az.Controllers;
 
@@ -15,6 +15,7 @@ public class VehicleController : Controller
     public VehicleController(IVehicleRepository vehicleRepository) => this.vehicleRepository = vehicleRepository;
 
     [HttpGet]
+    [AllowAnonymous]
     [ActionName("Index")]
     [Route("[controller]")]
     [Route("[controller]/[action]")]
@@ -26,6 +27,7 @@ public class VehicleController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [ActionName("Details")]
     [Route("[controller]/{id}")]
     [Route("[controller]/Index/{id}")]
@@ -56,21 +58,37 @@ public class VehicleController : Controller
     [Route("[controller]/[action]")]
     public async Task<IActionResult> Create([FromForm] VehicleDto vehicleDto)
     {
-        await this.vehicleRepository.InsertVehicleAsync(new Vehicle
-        {
-            UserLogin = base.HttpContext.User.Identity!.Name,
-            BrandName = vehicleDto.BrandName,
-            ModelName = vehicleDto.ModelName,
-            Price = vehicleDto.Price,
-            EngineVolume = vehicleDto.EngineVolume,
-            ImageUrl = vehicleDto.ImageUrl,
-            HorsePowers = vehicleDto.HorsePowers,
-            SeatsCount = vehicleDto.SeatsCount,
-            Color = vehicleDto.Color,
-            TransmissionType = vehicleDto.TransmissionType,
-            Drivetrain = vehicleDto.Drivetrain,
-        });
+        var vehicle = VehicleBuilder.Create(vehicleDto, default, base.HttpContext.User.Identity.Name);
+
+        await this.vehicleRepository.InsertVehicleAsync(vehicle);
 
         return base.RedirectToAction("Index");
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await this.vehicleRepository.DeleteVehicleAsync(id);
+
+        return base.Ok();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(int id)
+    {
+        var vehicle = await this.vehicleRepository.GetVehicleByIdAsync(id);
+
+        return base.View(model: vehicle);
+    }
+
+    [HttpPut]
+    [Consumes("application/json")]
+    public async Task<IActionResult> Update(int id, [FromBody]VehicleDto vehicleDto)
+    {
+        var vehicle = VehicleBuilder.Create(vehicleDto, id, base.HttpContext.User.Identity.Name);
+
+        await this.vehicleRepository.UpdateVehicleAsync(id, vehicle);
+
+        return base.RedirectToAction(actionName: "Index");
     }
 }

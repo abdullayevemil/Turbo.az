@@ -1,7 +1,7 @@
 @model Turbo.az.Models.Vehicle;
 
 @{
-    ViewData["Title"] = "Create new Vehicle";
+    ViewData["Title"] = "Create new vehicle advertisement";
 
     var brandName = string.Empty;
     var modelName = string.Empty;
@@ -17,7 +17,12 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<a asp-controller="Vehicle" asp-action="Index">All vehicles</a>
+<br>
+<a asp-controller="Vehicle" asp-action="Index" class="back-link">
+    <i class="fa fa-arrow-left"></i> All Vehicles
+</a>
+<br>
+<br>
 
 <form method="post" asp-controller="Vehicle" asp-action="Create">
     <div class="mb-3">
@@ -32,16 +37,17 @@
 
     <div class="mb-3">
         <label asp-for="@price" class="form-label">Price($): </label>
-        <input type="number" asp-for="@price" class="form-control">
+        <input type="number" asp-for="@price" class="form-control" min="0">
     </div>
 
     <div class="mb-3">
         <label asp-for="@engineVolume" class="form-label">Engine Volume(sm<sup>3</sup>): </label>
-        <input type="number" asp-for="@engineVolume" class="form-control">
+        <input type="number" asp-for="@engineVolume" class="form-control" min="0">
     </div>
 
     <div class="mb-3">
-        <label asp-for="@imageUrl" class="form-label">Image Url: </label>
+        <label asp-for="@imageUrl" class="form-label">Image Url</label>
+        <br>
         <input type="text" asp-for="@imageUrl" class="form-control">
     </div>
 
@@ -62,16 +68,16 @@
 
     <div class="mb-3">
         <label asp-for="@transmissionType" class="form-label">Transmission Type: </label>
+
+        <label asp-for="@drivetrain" class="form-label select-label">Drivetrain: </label>
+        <br>
         <select asp-for="@transmissionType">
             <option value=1>Automatic</option>
             <option value=2>Manual</option>
             <option value=3>Single Speed</option>
             <option value=4>Continuously Variable</option>
         </select>
-    </div>
 
-    <div class="mb-3">
-        <label asp-for="@drivetrain" class="form-label">Drivetrain: </label>
         <select asp-for="@drivetrain">
             <option value=1>RWD</option>
             <option value=2>FWD</option>
@@ -79,5 +85,7 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-success">Create new vehicle</button>
+    <button type="submit" class="btn submit-button">Create new vehicle</button>
 </form>
+
+<script src="~/js/file-operations.js"></script>

@@ -1,19 +1,20 @@
 using Microsoft.AspNetCore.Identity;
 using Turbo.az.CustomExceptions;
 using Turbo.az.Dtos;
+using Turbo.az.Models;
 using Turbo.az.Services.Base;
 
 namespace Turbo.az.Services;
 
 public class IdentityService : IIdentityService
 {
-    private readonly UserManager<IdentityUser> userManager;
+    private readonly UserManager<User> userManager;
     private readonly RoleManager<IdentityRole> roleManager;
-    private readonly SignInManager<IdentityUser> signInManager;
+    private readonly SignInManager<User> signInManager;
 
-    public IdentityService(UserManager<IdentityUser> userManager,
+    public IdentityService(UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
-        SignInManager<IdentityUser> signInManager)
+        SignInManager<User> signInManager)
     {
         this.userManager = userManager;
 
@@ -37,11 +38,16 @@ public class IdentityService : IIdentityService
         {
             throw new ArgumentException("Login process did not succeed, something went wrong!");
         }
+
+        if (loginDto.Login!.ToLower() == "admin" && loginDto.Password == "Admin123!")
+        {
+            await this.AddRoleToUserAsync(user, "Admin");
+        }
     }
 
-    public async Task<IdentityResult> RegisterAsync(RegisterDto registerDto, string key, string roleType)
+    public async Task<IdentityResult> RegisterAsync(RegisterDto registerDto)
     {
-        var newUser = new IdentityUser
+        var newUser = new User
         {
             Email = registerDto.Email,
             UserName = registerDto.Login,
@@ -49,22 +55,17 @@ public class IdentityService : IIdentityService
 
         var result = await this.userManager.CreateAsync(newUser, registerDto.Password!);
 
-        if (registerDto.Login!.ToLower().Contains(key))
-        {
-            await this.AddRoleToUserAsync(newUser, roleType);
-        }
-
         return result;
     }
 
-    public async Task<IdentityUser?> FindByUserNameAsync(string userName)
+    public async Task<User?> FindByUserNameAsync(string userName)
     {
         var user = await this.userManager.FindByNameAsync(userName);
 
         return user;
     }
 
-    public async Task AddRoleToUserAsync(IdentityUser user, string roleType)
+    public async Task AddRoleToUserAsync(User user, string roleType)
     {
         var role = new IdentityRole { Name =  roleType};
 
