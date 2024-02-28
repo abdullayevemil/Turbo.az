@@ -10,4 +10,5 @@ public interface IIdentityService
     Task LoginAsync(LoginDto loginDto);
     Task<User?> FindByUserNameAsync(string userName);
     Task LogOutAsync();
+    Task ChangePassword(User user, string oldPassword, string newPassword);
 }

@@ -44,7 +44,7 @@ public class IdentityService : IIdentityService
             throw new ArgumentException("Login process did not succeed, something went wrong!");
         }
 
-        if (loginDto.Login!.ToLower() == "admin" && loginDto.Password == "Admin123!")
+        if (loginDto.Login!.ToLower() == "admin")
         {
             await this.AddRoleToUserAsync(user, "Admin");
         }
@@ -73,11 +73,28 @@ public class IdentityService : IIdentityService
 
     public async Task AddRoleToUserAsync(User user, string roleType)
     {
-        var role = new IdentityRole { Name =  roleType};
+        var role = new IdentityRole { Name = roleType };
 
         await roleManager.CreateAsync(role);
 
         await userManager.AddToRoleAsync(user, role.Name);
+    }
+
+    public async Task ChangePassword(User user, string oldPassword, string newPassword)
+    {
+        if (user is null)
+        {
+            throw new ArgumentNullException("Username is null!");
+        }
+
+        var succeed = await userManager.CheckPasswordAsync(user, oldPassword);
+
+        if (!succeed)
+        {
+            throw new ArgumentException("Password is invalid!");
+        }
+
+        await userManager.ChangePasswordAsync(user, oldPassword, newPassword);
     }
 
     public async Task LogOutAsync() => await this.signInManager.SignOutAsync();

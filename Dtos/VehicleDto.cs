@@ -20,7 +20,10 @@ public class VehicleDto
     public int? EngineVolume { get; set; }
 
     [Required]
-    public string? ImageUrl { get; set; }
+    public string? ImageUrls { get; set; }
+
+    [Required]
+    public string? FirstImageUrl { get; set; }
 
     [Required]
     [Range(0, int.MaxValue)]

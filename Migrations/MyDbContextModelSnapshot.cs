@@ -274,10 +274,13 @@ namespace Turbo.az.Migrations
                     b.Property<int?>("EngineVolume")
                         .HasColumnType("int");
 
+                    b.Property<string>("FirstImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("HorsePowers")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("ImageUrls")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModelName")

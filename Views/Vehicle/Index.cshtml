@@ -25,9 +25,9 @@
             <div>
                 <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@vehicle.Id">
                     <div>
-                        @if (@vehicle.ImageUrl is not null)
+                        @if (@vehicle.FirstImageUrl is not null)
                         {
-                            <img src="@vehicle.ImageUrl" alt="image of car" />
+                            <img src="~/@vehicle.FirstImageUrl" alt="image of car" />
                         }
                         <p><b><i>@vehicle.BrandName @vehicle.ModelName</i></b></p>
                         <p><i>@vehicle.Price$, @vehicle.EngineVolume sm<sup>3</sup></i></p>

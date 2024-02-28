@@ -7,4 +7,5 @@ public interface IUserRepository
     IEnumerable<User> GetAllUsers();
     Task BanUserAsync(string id);
     Task DeleteUserAsync(string id);
+    Task<User> GetUserByUserNameAsync(string userName);
 }

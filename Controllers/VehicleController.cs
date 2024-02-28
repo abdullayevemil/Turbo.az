@@ -1,5 +1,6 @@
 #pragma warning disable CS8604
 
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Dtos;
@@ -56,9 +57,26 @@ public class VehicleController : Controller
 
     [HttpPost]
     [Route("[controller]/[action]")]
-    public async Task<IActionResult> Create([FromForm] VehicleDto vehicleDto)
+    public async Task<IActionResult> Create([FromForm] VehicleDto vehicleDto, [FromForm] IFormFileCollection files)
     {
+        await UploadImages(files);
+
         var vehicle = VehicleBuilder.Create(vehicleDto, default, base.HttpContext.User.Identity.Name);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        bool isFirst = true;
+
+        foreach (var file in files)
+        {
+            if (isFirst)
+            {
+                vehicle.FirstImageUrl = "Images/" + base.HttpContext.User.Identity.Name + '_' + file.FileName;
+            }
+            stringBuilder.Append("Images/" + base.HttpContext.User.Identity.Name + '_' + file.FileName + ';');
+        }
+
+        vehicle.ImageUrls = stringBuilder.ToString();
 
         await this.vehicleRepository.InsertVehicleAsync(vehicle);
 
@@ -83,12 +101,30 @@ public class VehicleController : Controller
 
     [HttpPut]
     [Consumes("application/json")]
-    public async Task<IActionResult> Update(int id, [FromBody]VehicleDto vehicleDto)
+    public async Task<IActionResult> Update(int id, [FromBody] VehicleDto vehicleDto)
     {
         var vehicle = VehicleBuilder.Create(vehicleDto, id, base.HttpContext.User.Identity.Name);
 
         await this.vehicleRepository.UpdateVehicleAsync(id, vehicle);
 
         return base.RedirectToAction(actionName: "Index");
+    }
+
+    public async Task UploadImages(IFormFileCollection files)
+    {
+        string destinationVehicleImagePath;
+
+        string filename;
+
+        foreach (var file in files)
+        {
+            filename = $"{base.HttpContext.User.Identity!.Name}_{file.FileName}";
+
+            destinationVehicleImagePath = $"wwwroot/Images/{filename}";
+
+            using var fileStream = System.IO.File.Create(destinationVehicleImagePath);
+
+            await file.CopyToAsync(fileStream);
+        }
     }
 }

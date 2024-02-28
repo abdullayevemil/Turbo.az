@@ -4,10 +4,10 @@
     ViewData["Title"] = "User Info";
 
     var claimTypes = new Dictionary<string, string>
-{
-{ClaimTypes.Name , "Login"},
-{ClaimTypes.Email , "Email adress"}
-};
+    {
+        {ClaimTypes.Name , "Login"},
+        {ClaimTypes.Email , "Email adress"}
+    };
 }
 
 <div class="text-center user-info">
@@ -25,4 +25,9 @@
             <br>
         }
     }
+    <br>
+    <a class="link" asp-controller="Identity" asp-action="ChangePassword">
+        <i class="fa fa-refresh" style="font-size:24px"></i>
+        Change password
+    </a>
 </div>

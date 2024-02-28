@@ -16,7 +16,7 @@ public class VehicleBuilder
             ModelName = vehicleDto.ModelName,
             Price = vehicleDto.Price,
             EngineVolume = vehicleDto.EngineVolume,
-            ImageUrl = vehicleDto.ImageUrl,
+            ImageUrls = vehicleDto.ImageUrls,
             HorsePowers = vehicleDto.HorsePowers,
             SeatsCount = vehicleDto.SeatsCount,
             Color = vehicleDto.Color,

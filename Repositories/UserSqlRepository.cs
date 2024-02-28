@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Turbo.az.CustomExceptions;
 using Turbo.az.Data;
 using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
@@ -17,6 +18,18 @@ public class UserSqlRepository : IUserRepository
         var users = this.dbContext.Users.Where(user => user.UserName != "admin").AsEnumerable();
 
         return users;
+    }
+
+    public async Task<User> GetUserByUserNameAsync(string userName)
+    {
+        var user = await this.dbContext.Users.FirstOrDefaultAsync(user => user.UserName == userName);
+
+        if (user is null)
+        {
+            throw new NotFoundException($"User with username: {userName} was not found in the database!");
+        }
+
+        return user;
     }
 
     public async Task BanUserAsync(string id)

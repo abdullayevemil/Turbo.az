@@ -24,7 +24,7 @@
 <br>
 <br>
 
-<form method="post" asp-controller="Vehicle" asp-action="Create">
+<form enctype="multipart/form-data" method="post" asp-controller="Vehicle" asp-action="Create">
     <div class="mb-3">
         <label asp-for="@brandName" class="form-label">Brand: </label>
         <input required type="text" asp-for="@brandName" class="form-control">
@@ -48,7 +48,7 @@
     <div class="mb-3">
         <label asp-for="@imageUrl" class="form-label">Image Url</label>
         <br>
-        <input required type="text" asp-for="@imageUrl" class="form-control">
+        <input required id="files" type="file" asp-for="@imageUrl" name="files" accept="image/*" multiple="multiple"/>
     </div>
 
     <div class="mb-3">

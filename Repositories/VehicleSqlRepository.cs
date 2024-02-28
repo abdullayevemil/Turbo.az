@@ -86,8 +86,6 @@ public class VehicleSqlRepository : IVehicleRepository
         
         vehicleToUpdate.Price = newVehicle.Price;
         
-        vehicleToUpdate.ImageUrl = newVehicle.ImageUrl;
-        
         vehicleToUpdate.EngineVolume = newVehicle.EngineVolume;
 
         vehicleToUpdate.HorsePowers = newVehicle.HorsePowers;

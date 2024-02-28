@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.CustomExceptions;
 using Turbo.az.Dtos;
+using Turbo.az.Repositories.Base;
 using Turbo.az.Services.Base;
 
 namespace Turbo.az.Controllers;
@@ -11,8 +12,14 @@ namespace Turbo.az.Controllers;
 public class IdentityController : Controller
 {
     private readonly IIdentityService identityService;
+    private readonly IUserRepository userRepository;
 
-    public IdentityController(IIdentityService identityService) => this.identityService = identityService;
+    public IdentityController(IIdentityService identityService, IUserRepository userRepository)
+    {
+        this.userRepository = userRepository;
+
+        this.identityService = identityService;
+    }
 
     [HttpGet]
     public IActionResult Login() => base.View();
@@ -57,6 +64,22 @@ public class IdentityController : Controller
         await this.identityService.LogOutAsync();
 
         return base.Ok();
+    }
+
+    [HttpGet]
+    public IActionResult ChangePassword() => base.View();
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordDto changePasswordDto)
+    {
+        var userName = base.HttpContext.User.Identity.Name;
+
+        var user = await this.userRepository.GetUserByUserNameAsync(userName!);
+
+        await this.identityService.ChangePassword(user, changePasswordDto.OldPassword!, changePasswordDto.NewPassword!);
+
+        return base.RedirectToAction(actionName: "Info", controllerName: "User");
     }
 
     private void AddErrorsToModelState(IEnumerable<IdentityError> errors)

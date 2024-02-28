@@ -8,7 +8,8 @@ public class Vehicle
     public string? BrandName { get; set; }
     public string? ModelName { get; set; }
     public int? EngineVolume { get; set; }
-    public string? ImageUrl { get; set; }
+    public string? ImageUrls { get; set; }
+    public string? FirstImageUrl { get; set; }
     public int? HorsePowers { get; set; }
     public int? SeatsCount { get; set; }
     public string? Color { get; set; }
