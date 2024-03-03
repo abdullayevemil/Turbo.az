@@ -1,6 +1,7 @@
-using System.Data.SqlClient;
-using Dapper;
-using Turbo.az.Dtos;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Turbo.az.CustomExceptions;
+using Turbo.az.Data;
 using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
 
@@ -8,43 +9,44 @@ namespace Turbo.az.Repositories;
 
 public class UserSqlRepository : IUserRepository
 {
-    private readonly string connectionString;
+    private readonly MyDbContext dbContext;
 
-    public UserSqlRepository(string connectionString) => this.connectionString = connectionString;
-    
-    public async Task<IEnumerable<User>> GetAllUsersAsync()
+    public UserSqlRepository(MyDbContext dbContext) => this.dbContext = dbContext;
+
+    public IEnumerable<User> GetAllUsers()
     {
-        using var connection = new SqlConnection(connectionString);
+        var users = this.dbContext.Users.Where(user => user.UserName != "admin").AsEnumerable();
 
-        var users = await connection.QueryAsync<User>("select * from Users");
-        
         return users;
     }
 
-    public async Task<User?> GetUserByLoginAndPassword(LoginDto loginDto)
+    public async Task<User> GetUserByUserNameAsync(string userName)
     {
-        using var connection = new SqlConnection(connectionString);
+        var user = await this.dbContext.Users.FirstOrDefaultAsync(user => user.UserName == userName);
 
-        var user = await connection.QueryFirstOrDefaultAsync<User>(
-            sql: @"select *
-                from Users
-                where Login = @login and Password = @password",
-            param: new
-            {
-                login = loginDto.Login,
-                password = loginDto.Password,
-            }
-        );
+        if (user is null)
+        {
+            throw new NotFoundException($"User with username: {userName} was not found in the database!");
+        }
 
         return user;
     }
 
-    public async Task InsertUserAsync(User user)
+    public async Task BanUserAsync(string id)
     {
-        using var connection = new SqlConnection(connectionString);
-        
-        var users = await connection.ExecuteAsync(
-            sql: "insert into Users (Email, Login, Password) values (@Email, @Login, @Password);",
-            param: user);
+        var user = await this.dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+
+        user!.IsBanned = !user!.IsBanned;
+
+        await this.dbContext.SaveChangesAsync();
+    }
+
+    public async Task DeleteUserAsync(string id)
+    {
+        var user = await this.dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+
+        this.dbContext.Remove<User>(user!);
+
+        await this.dbContext.SaveChangesAsync();
     }
 }

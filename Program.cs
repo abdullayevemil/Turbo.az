@@ -1,5 +1,8 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Turbo.az.Data;
 using Turbo.az.Middlewares;
+using Turbo.az.Models;
 using Turbo.az.Repositories;
 using Turbo.az.Repositories.Base;
 using Turbo.az.Services;
@@ -9,60 +12,31 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
-        options.LoginPath = "/Identity/Login";
-        options.ReturnUrlParameter = "returnUrl";
-    });
-
 builder.Services.AddAuthorization();
 
 builder.Services.AddTransient<LogMiddleware>();
 
-builder.Services.AddSingleton<IVehicleRepository>(provider =>
+builder.Services.AddScoped<IVehicleRepository, VehicleSqlRepository>();
+
+builder.Services.AddScoped<ILogRepository, LogSqlRepository>();
+
+builder.Services.AddScoped<IUserRepository, UserSqlRepository>();
+
+builder.Services.AddScoped<ICustomLogger, SqlLogger>();
+
+builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddDbContext<MyDbContext>(dbContextOptionsBuilder =>
 {
-    string connectionStringName = "TurboazDb";
-
-    string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
-
-    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString))
-    {
-        throw new Exception($"connection string {connectionStringName} not found in setting.json");
-    }
-
-    return new VehicleSqlRepository(connectionString);
+    var connectionString = builder.Configuration.GetConnectionString("TurboazDb");
+    dbContextOptionsBuilder.UseSqlServer(connectionString);
 });
 
-builder.Services.AddSingleton<IUserRepository>(provider =>
+builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
-    string connectionStringName = "TurboazDb";
+    options.Password.RequireNonAlphanumeric = true;
+})
+    .AddEntityFrameworkStores<MyDbContext>();
 
-    string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
-
-    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString))
-    {
-        throw new Exception($"connection string {connectionStringName} not found in setting.json");
-    }
-
-    return new UserSqlRepository(connectionString);
-});
-
-builder.Services.AddScoped<ICustomLogger>(provider =>
-{
-    string connectionStringName = "TurboazDb";
-
-    string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
-
-    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString))
-    {
-        throw new Exception($"connection string {connectionStringName} not found in setting.json");
-    }
-
-    bool isCustomLoggingEnabled = builder.Configuration.GetSection("isCustomLoggingEnabled").Get<bool>();
-
-    return new SqlLogger(connectionString, isCustomLoggingEnabled);
-});
 
 var app = builder.Build();
 

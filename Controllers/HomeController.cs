@@ -2,14 +2,18 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Models;
+using Turbo.az.Repositories.Base;
 
 namespace Turbo.az.Controllers;
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly IVehicleRepository vehicleRepository;
 
-    public HomeController(ILogger<HomeController> logger) => _logger = logger;
+    public HomeController(IVehicleRepository vehicleRepository) 
+    {
+        this.vehicleRepository = vehicleRepository;
+    }
 
     [HttpGet]
     [Authorize]
@@ -17,7 +21,12 @@ public class HomeController : Controller
 
     [HttpGet]
     [AllowAnonymous]
-    public IActionResult Main() => base.View();
+    public async Task<IActionResult> Main()
+    {
+        var vehiclesInformation = await vehicleRepository.GetVehiclesMainInformation();
+
+        return base.View(model: vehiclesInformation);
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error() => base.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
