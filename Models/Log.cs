@@ -1,4 +1,5 @@
 namespace Turbo.az.Models;
+
 public class Log
 {
     public int LogId { get; set; }

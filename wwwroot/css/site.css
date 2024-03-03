@@ -296,7 +296,7 @@ a:hover {
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 20px 0;
+  margin: 30px 0;
 }
 
 .input-field {
@@ -373,28 +373,53 @@ a:hover {
 
 @media only screen and (max-width: 564px) {
   .wrapper {
-      padding: 20px;
+    padding: 20px;
   }
 
   .login_box {
-      padding: 7.5em 1.5em 4em 1.5em;
+    padding: 7.5em 1.5em 4em 1.5em;
   }
 }
 
 @keyframes blink {
   0% {
-      opacity: 1;
+    opacity: 1;
   }
 
   50% {
-      opacity: 0;
+    opacity: 0;
   }
 
   100% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 .icon.blinking {
   animation: blink 1s infinite;
+}
+
+.main-info,
+.user-info,
+.vehicle-details {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  padding: 15px;
+  font-size: 20px;
+  color: white;
+}
+
+.vehicle-details {
+  display: flex;
+  flex-direction: row;
+}
+
+.vehicle-details > p {
+  display: inline;
+}
+
+.details-image {
+  width: 600px;
+  height: 400px;
+  margin-right: 40px;
 }

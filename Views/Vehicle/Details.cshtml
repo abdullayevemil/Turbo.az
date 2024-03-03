@@ -1,0 +1,24 @@
+@model Vehicle
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a asp-controller="Vehicle" asp-action="Index">All vehicles</a>
+
+<div class="vehicle-details">
+    @if (@Model.ImageUrl is not null)
+    {
+        <img class="details-image" src=@Model.ImageUrl>
+    }
+    <div>
+        <p>@Model.BrandName @Model.ModelName</p>
+        <p>@Model.Price $, @Model.Color</p>
+        <p>Engine volume: @Model.EngineVolume sm<sup>3</sup>, @Model.HorsePowers hp</p>
+        <p>@Model.SeatsCount seats</p>
+        <p>Trasnmission: @Model.TransmissionType.ToString()</p>
+        <p>Drivetrain: @Model.Drivetrain.ToString()</p>
+    </div>
+</div>

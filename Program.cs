@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Turbo.az.Middlewares;
 using Turbo.az.Repositories;
 using Turbo.az.Repositories.Base;
@@ -8,15 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Identity/Login";
+        options.ReturnUrlParameter = "returnUrl";
+    });
+
+builder.Services.AddAuthorization();
+
 builder.Services.AddTransient<LogMiddleware>();
 
-builder.Services.AddSingleton<IVehicleRepository>(provider => 
+builder.Services.AddSingleton<IVehicleRepository>(provider =>
 {
     string connectionStringName = "TurboazDb";
 
     string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
 
-    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString)) 
+    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString))
     {
         throw new Exception($"connection string {connectionStringName} not found in setting.json");
     }
@@ -24,13 +34,13 @@ builder.Services.AddSingleton<IVehicleRepository>(provider =>
     return new VehicleSqlRepository(connectionString);
 });
 
-builder.Services.AddSingleton<IUserRepository>(provider => 
+builder.Services.AddSingleton<IUserRepository>(provider =>
 {
     string connectionStringName = "TurboazDb";
 
     string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
 
-    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString)) 
+    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString))
     {
         throw new Exception($"connection string {connectionStringName} not found in setting.json");
     }
@@ -38,13 +48,13 @@ builder.Services.AddSingleton<IUserRepository>(provider =>
     return new UserSqlRepository(connectionString);
 });
 
-builder.Services.AddScoped<ICustomLogger>(provider => 
+builder.Services.AddScoped<ICustomLogger>(provider =>
 {
     string connectionStringName = "TurboazDb";
 
     string? connectionString = builder.Configuration.GetConnectionString(connectionStringName);
 
-    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString)) 
+    if (string.IsNullOrEmpty(connectionString) || string.IsNullOrWhiteSpace(connectionString))
     {
         throw new Exception($"connection string {connectionStringName} not found in setting.json");
     }
@@ -70,6 +80,12 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.MapDefaultControllerRoute();
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Main}/{id?}");
 
 app.Run();

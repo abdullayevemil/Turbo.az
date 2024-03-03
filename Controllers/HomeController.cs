@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Models;
 
@@ -10,10 +11,14 @@ public class HomeController : Controller
 
     public HomeController(ILogger<HomeController> logger) => _logger = logger;
 
-    public IActionResult Index() => View();
+    [HttpGet]
+    [Authorize]
+    public IActionResult Index() => base.View();
 
-    public IActionResult Privacy() => View();
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult Main() => base.View();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    public IActionResult Error() => base.View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
 }

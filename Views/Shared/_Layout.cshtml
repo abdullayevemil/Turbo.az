@@ -1,5 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    bool isAuthenticated = base.User.Identity.IsAuthenticated;
+}
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,11 +13,12 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Turbo.az.styles.css" asp-append-version="true" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="neon navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <a class="neon navbar-brand" asp-area="" asp-controller="Home" asp-action="Main">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -25,43 +31,58 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="neon nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                Home
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="neon nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                Privacy
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="neon nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="Index">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                Vehicles
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="neon nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Login">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                Login
-                            </a>
-                        </li>
+                        @if (isAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="Index">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    Vehicles
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Login">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    Login
+                                </a>
+                            </li>
+                        }
                     </ul>
+
+                    @if (isAuthenticated)
+                    {
+                        <a class="neon nav-link text-dark" asp-area="" asp-controller="User" asp-action="Info">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            @ViewData["Username"]
+                        </a>
+                        <a id="logout-link" class="neon nav-link text-dark" asp-area="">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            LogOut
+                        </a>
+                    }
                 </div>
             </div>
         </nav>
@@ -74,7 +95,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - Turbo.az - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Turbo.az
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -82,4 +103,5 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

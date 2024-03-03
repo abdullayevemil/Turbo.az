@@ -5,6 +5,7 @@ using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
 
 namespace Turbo.az.Repositories;
+
 public class UserSqlRepository : IUserRepository
 {
     private readonly string connectionString;
@@ -20,7 +21,7 @@ public class UserSqlRepository : IUserRepository
         return users;
     }
 
-    public async Task<User?> GetUserByLoginAndPassword(UserDto userDto)
+    public async Task<User?> GetUserByLoginAndPassword(LoginDto loginDto)
     {
         using var connection = new SqlConnection(connectionString);
 
@@ -30,8 +31,8 @@ public class UserSqlRepository : IUserRepository
                 where Login = @login and Password = @password",
             param: new
             {
-                login = userDto.Login,
-                password = userDto.Password,
+                login = loginDto.Login,
+                password = loginDto.Password,
             }
         );
 
@@ -43,7 +44,7 @@ public class UserSqlRepository : IUserRepository
         using var connection = new SqlConnection(connectionString);
         
         var users = await connection.ExecuteAsync(
-            sql: "insert into Users (Login, Password) values (@Login, @Password);",
+            sql: "insert into Users (Email, Login, Password) values (@Email, @Login, @Password);",
             param: user);
     }
 }
