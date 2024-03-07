@@ -8,9 +8,11 @@
     <label class="form-label">Select wallpaper of the site: </label>
     <br>
     <form enctype="multipart/form-data" id="file-form" method="post">
-        <input name="file" id="file" type="file" accept="image/jpeg" class="form-control">
+        <input name="file" id="file" type="file" accept="image/jpeg" class="form-control" required>
         <br>
-        <button id="file-upload-submit" type="submit" class="btn submit-button">Confirm file</button>
+        <button onclick="clearCache()" id="file-upload-submit" type="submit" class="btn submit-button">Confirm file</button>
         <br>
     </form>
 </div>
+
+<script src="~/js/cache-management.js"></script>

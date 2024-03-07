@@ -33,7 +33,9 @@ public class IdentityController : Controller
         }
         catch (Exception exception) when (exception is NotFoundException || exception is ArgumentException)
         {
-            return base.BadRequest(exception.Message);
+            base.ModelState.AddModelError(exception.GetType().Name, exception.Message);
+
+            return base.View("Login");
         }
 
         return base.RedirectToAction(actionName: "Index", controllerName: "Home");

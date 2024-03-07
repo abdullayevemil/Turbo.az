@@ -4,10 +4,10 @@ async function banUser(id) {
     let text = "";
 
     if (link.textContent.includes("activate")) {
-        text = "ban user account";
+        text = "activate user account";
     }
     else {
-        text = "activate user account";
+        text = "ban user account";
     }
 
     if (confirm("Confirm that you want to " + text)) {
@@ -17,9 +17,11 @@ async function banUser(id) {
             }).then(res => {
                 if (res.ok) {
                     if (link.textContent.includes("activate")) {
+                        link.style.color = "red";
                         link.innerText = "ban user account";
                     }
                     else {
+                        link.style.color = "green";
                         link.innerText = "activate user account";
                     }
                 } else if (res.status === 404) {

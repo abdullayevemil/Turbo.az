@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Turbo.az.CustomExceptions;
 using Turbo.az.Data;

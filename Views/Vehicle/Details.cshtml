@@ -1,4 +1,5 @@
 @model Vehicle
+@inject IUserRepository userRepository
 
 @{
     ViewData["Title"] = "Details";
@@ -6,11 +7,11 @@
     var isFirst = true;
 
     var imageUrls = Model.ImageUrls.Split(';');
+
+    var phoneNumber = userRepository.GetUserByUserNameAsync(Model.UserLogin);
 }
 
 <h1>@ViewData["Title"]</h1>
-
-<a asp-controller="Vehicle" asp-action="Index">All vehicles</a>
 
 <div class="vehicle-details">
     @if (@Model.ImageUrls is not null)
@@ -38,6 +39,11 @@
         <p>@Model.SeatsCount seats</p>
         <p>Trasnmission: @Model.TransmissionType.ToString()</p>
         <p>Drivetrain: @Model.Drivetrain.ToString()</p>
+        <br>
+        <p>@Model.UserLogin    
+            <i class="fa fa-phone" style="font-size:24px"></i>
+            @phoneNumber
+        </p>
     </div>
 </div>
 
@@ -45,12 +51,10 @@
     let slideIndex = 1;
     showSlides(slideIndex);
 
-    // Next/previous controls
     function plusSlides(n) {
         showSlides(slideIndex += n);
     }
 
-    // Thumbnail image controls
     function currentSlide(n) {
         showSlides(slideIndex = n);
     }

@@ -20,13 +20,13 @@
                 <br>
                 @if (user.IsBanned)
                 {
-                    <a class="link" onclick="banUser('@user.Id')" id="link-@user.Id">
+                    <a class="account-management-link" style="color: green;" onclick="banUser('@user.Id')" id="link-@user.Id">
                         activate user account
                     </a>
                 }
                 else
                 {
-                    <a class="link" onclick="banUser('@user.Id')" id="link-@user.Id">
+                    <a class="account-management-link" style="color: red;" onclick="banUser('@user.Id')" id="link-@user.Id">
                         ban user account
                     </a>
                 }
@@ -34,7 +34,7 @@
                 <br>
                 @if (isAdmin)
                 {
-                    <a class="link" onclick="deleteUser('@user.Id')" id="delete-user-link">
+                    <a class="delete-link" onclick="deleteUser('@user.Id')" id="delete-user-link">
                         <i class="fa fa-trash" style="font-size:24px"></i>
                     </a>
                 }

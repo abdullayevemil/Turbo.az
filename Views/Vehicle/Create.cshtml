@@ -17,13 +17,6 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<br>
-<a asp-controller="Vehicle" asp-action="Index" class="back-link">
-    <i class="fa fa-arrow-left"></i> All Vehicles
-</a>
-<br>
-<br>
-
 <form enctype="multipart/form-data" method="post" asp-controller="Vehicle" asp-action="Create">
     <div class="mb-3">
         <label asp-for="@brandName" class="form-label">Brand: </label>
@@ -53,12 +46,12 @@
 
     <div class="mb-3">
         <label asp-for="@horsePowers" class="form-label">Horse Powers: </label>
-        <input required type="text" asp-for="@horsePowers" class="form-control">
+        <input required type="nuber" asp-for="@horsePowers" class="form-control">
     </div>
 
     <div class="mb-3">
         <label asp-for="@seatsCount" class="form-label">Seats Count: </label>
-        <input required type="text" asp-for="@seatsCount" class="form-control">
+        <input required type="number" asp-for="@seatsCount" class="form-control">
     </div>
 
     <div class="mb-3">

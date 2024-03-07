@@ -22,7 +22,7 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3">
             <div class="container-fluid">
                 <a class="neon navbar-brand" asp-area="" asp-controller="Home" asp-action="Main">
                     <span></span>
@@ -68,7 +68,7 @@
                                         <span></span>
                                         <span></span>
                                         Site Management
-                                        <i class="fa fa-gear fa-spin" style="font-size:24px"></i>
+                                        <i class="fa fa-cog" style="font-size:24px"></i>
                                     </a>
                                 </li>
                             }
@@ -130,12 +130,14 @@
     <br>
     <br>
 
+    <script src="~/js/login-form.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted">
         <div class="container">
             &copy; 2024 - Turbo.az
         </div>

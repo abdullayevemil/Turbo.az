@@ -24,17 +24,7 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-.neon:hover {
-  background: #03e9f4;
-  color: white !important;
-  box-shadow: 0 0 5px #03e9f4,
-    0 0 25px #03e9f4,
-    0 0 50px #03e9f4,
-    0 0 200px #03e9f4;
-  -webkit-box-reflect: below 1px linear-gradient(transparent);
-}
-
-.neon span:nth-child(1) {
+.neon:hover span:nth-child(1) {
   top: 0;
   left: 0;
   width: 100%;
@@ -54,7 +44,7 @@ html {
   }
 }
 
-.neon span:nth-child(2) {
+.neon:hover span:nth-child(2) {
   top: -100%;
   right: 0;
   width: 2px;
@@ -76,14 +66,14 @@ html {
   }
 }
 
-.neon span:nth-child(3) {
+.neon:hover span:nth-child(3) {
   bottom: 0;
   right: 0;
   width: 100%;
   height: 2px;
   background: linear-gradient(270deg, transparent, #03e9f4);
   animation: animate3 1s linear infinite;
-  animation-delay: 0.50s;
+  animation-delay: 0.5s;
 }
 
 @keyframes animate3 {
@@ -97,8 +87,7 @@ html {
   }
 }
 
-
-.neon span:nth-child(4) {
+.neon:hover span:nth-child(4) {
   bottom: -100%;
   left: 0;
   width: 2px;
@@ -119,15 +108,6 @@ html {
   }
 }
 
-.neon span:nth-child(1) {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #03e9f4);
-  animation: animate1 1s linear infinite;
-}
-
 .neon span {
   display: block;
   position: absolute;
@@ -139,7 +119,7 @@ html {
   padding: 5px 6px;
   margin: 8px 0;
   color: #03e9f4 !important;
-  text-decoration: none;
+  text-decoration: none !important;
   transition: 0.5s;
   letter-spacing: 4px;
   overflow: hidden;
@@ -152,14 +132,14 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
-  background-color: #0d1117;
   color: white;
 }
 
 header,
 nav.bg-white {
-  background-color: #0d1117 !important;
+  position: sticky !important;
+  top: 0;
+  background-color: #0d1117d9;
 }
 
 .vehicles-container {
@@ -172,7 +152,7 @@ nav.bg-white {
 
 .vehicle-info {
   width: 285px;
-  height: 330px;
+  height: 350px;
   background-color: rgb(19, 24, 36);
   padding: 10px;
   border-radius: 20px;
@@ -222,6 +202,7 @@ img {
 
 body {
   background-image: url("../Wallpaper/Wallpaper.jpeg");
+  filter: blur(10%);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -243,6 +224,7 @@ a:hover {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  font-size: 16px !important;
   background-color: rgba(0, 0, 0, 0.2);
 }
 
@@ -407,6 +389,10 @@ a:hover {
   animation: blink 1s infinite;
 }
 
+.main-info {
+  margin-top: 40px;
+}
+
 .main-info,
 .user-info,
 .vehicle-details,
@@ -423,8 +409,8 @@ a:hover {
   flex-direction: row;
 }
 
-.vehicle-details > p,
-.user-details > p {
+.vehicle-details>p,
+.user-details>p {
   display: inline;
 }
 
@@ -440,7 +426,7 @@ a:hover {
 
 select {
   width: 170px;
-  font-size: 22px !important; 
+  font-size: 22px !important;
 }
 
 .select-label {
@@ -492,24 +478,20 @@ a.link:hover {
   box-sizing: border-box;
 }
 
-/* Position the image container (needed to position the left and right arrows) */
 .my-container {
   position: relative;
 }
 
-/* Hide the images by default */
 .mySlides {
   display: none;
   width: 600px;
   height: 400px;
 }
 
-/* Add a pointer when hovering over the thumbnail images */
 .cursor {
   cursor: pointer;
 }
 
-/* Next & previous buttons */
 .prev,
 .next {
   cursor: pointer;
@@ -532,19 +514,16 @@ a.link:hover {
   color: #03e9f4 !important;
 }
 
-/* Position the "next button" to the right */
 .next {
   right: 0;
   border-radius: 3px 0 0 3px;
 }
 
-/* On hover, add a black background color with a little bit see-through */
 .prev:hover,
 .next:hover {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
-/* Number text (1/3 etc) */
 .numbertext {
   color: #f2f2f2;
   font-size: 12px;
@@ -553,7 +532,6 @@ a.link:hover {
   top: 0;
 }
 
-/* Container for image text */
 .caption-container {
   text-align: center;
   background-color: #222;
@@ -567,13 +545,11 @@ a.link:hover {
   clear: both;
 }
 
-/* Six columns side by side */
 .column {
   float: left;
   width: 16.66%;
 }
 
-/* Add a transparency effect for thumnbail images */
 .demo {
   opacity: 0.6;
 }
@@ -581,4 +557,52 @@ a.link:hover {
 .active,
 .demo:hover {
   opacity: 1;
+}
+
+.dropdown {
+  float: left;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+  position: absolute;
+  top: 100;
+  left: 0;
+}
+
+.dropdown:hover .dropdown-content a {
+  display: block;
+}
+
+a.delete-link:hover {
+  color: red !important;
+}
+
+.account-management-link {
+  cursor: default;
+}
+
+.account-management-link:hover {
+  text-decoration: none;
+}
+
+div.main-data {
+  margin-top: 20px;
+  width: 430px;
+}
+
+div.site-info {
+  margin-top: 20px;
+}
+
+ul.main-data-list {
+  color: #03e9f4;
 }

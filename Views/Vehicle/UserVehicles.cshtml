@@ -10,8 +10,6 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<a asp-controller="Vehicle" asp-action="Index">All vehicles</a>
-
 <div class="vehicles-container">
     @foreach (var vehicle in Model)
     {
@@ -31,7 +29,7 @@
             <br>
             <div>
                 <a class="link" asp-controller="Vehicle" asp-action="Update" asp-route-id="@vehicle.Id">
-                    <i class="fa fa-refresh" style="font-size:24px"></i>
+                    <i class="fa fa-edit" style="font-size:24px"></i>
                 </a>
                 <a class="link" onclick="deleteVehicle(@vehicle.Id)" id="delete-vehicle-link">
                     <i class="fa fa-trash" style="font-size:24px"></i>

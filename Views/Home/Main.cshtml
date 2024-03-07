@@ -2,7 +2,7 @@
     ViewData["Title"] = "Main Page";
 }
 
-<div class="text-center main-info">
+<div class="text-center main-info site-info">
     Welcome to <b>Turboaz</b> - Your Gateway to Dream Cars!
     <br>
     <br>
@@ -34,9 +34,20 @@
     <br>
     At Turboaz, we believe that the journey to finding your dream car should be just as thrilling as the destination
     itself. Join us in the pursuit of automotive excellence, where each click brings you closer to the vehicle you've
-    always envisioned.  There are @Model.Count vehicle car advertisements on the site currently, with prices in an interval from 
-    @Model.MinimalPrice $ to @Model.MaximalPrice $ and the average price of @Model.AveragePrice $!
+    always envisioned.
     <br>
     <br>
     Start your exhilarating journey with Turboaz today - because your dream car is just a click away!
+</div>
+
+<div class="main-data main-info">
+    <ul class="main-data-list">
+        <li>
+            Current vehicle advertisements count: @Model.Count
+            <br>
+            Prices range: @Model.MinimalPrice $ — @Model.MaximalPrice $
+            <br>
+            Average price: @Model.AveragePrice $
+        </li>
+    </ul>
 </div>

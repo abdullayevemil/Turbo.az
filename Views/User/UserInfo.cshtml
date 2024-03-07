@@ -6,7 +6,8 @@
     var claimTypes = new Dictionary<string, string>
     {
         {ClaimTypes.Name , "Login"},
-        {ClaimTypes.Email , "Email adress"}
+        {ClaimTypes.Email , "Email adress"},
+        {ClaimTypes.MobilePhone, "Mobile Phone"}
     };
 }
 
@@ -27,7 +28,9 @@
     }
     <br>
     <a class="link" asp-controller="Identity" asp-action="ChangePassword">
-        <i class="fa fa-refresh" style="font-size:24px"></i>
+        <i class="fa fa-edit" style="font-size:24px"></i>
         Change password
     </a>
 </div>
+
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
