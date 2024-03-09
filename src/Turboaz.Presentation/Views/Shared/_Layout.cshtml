@@ -25,10 +25,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3">
             <div class="container-fluid">
                 <a class="neon navbar-brand" asp-area="" asp-controller="Home" asp-action="Main">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
+                    <partial name="_NavigationAnimation" />
                     Turbo.az
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
@@ -41,10 +38,7 @@
                         {
                             <li class="nav-item">
                                 <a class="neon nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    <partial name="_NavigationAnimation" />
                                     Home
                                     <i class="material-icons">home</i>
                                 </a>
@@ -53,20 +47,14 @@
                             {
                                 <li class="nav-item">
                                     <a class="neon nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
+                                        <partial name="_NavigationAnimation" />
                                         Users
                                         <i class="material-icons">&#xe7ef;</i>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="neon nav-link text-dark" asp-area="" asp-controller="SiteManagement" asp-action="UploadWallpaper">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
+                                        <partial name="_NavigationAnimation" />
                                         Site Management
                                         <i class="fa fa-cog" style="font-size:24px"></i>
                                     </a>
@@ -77,10 +65,7 @@
                         {
                             <li class="nav-item">
                                 <a class="neon nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Login">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    <partial name="_NavigationAnimation" />
                                     Login
                                     <i class="material-icons">&#xe7fe;</i>
                                 </a>
@@ -88,10 +73,7 @@
                         }
                         <li class="nav-item">
                                 <a class="neon nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="Index">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
+                                    <partial name="_NavigationAnimation" />
                                     Vehicles
                                     <i class="material-icons">directions_car</i>
                                 </a>
@@ -101,18 +83,12 @@
                     @if (isAuthenticated)
                     {
                         <a class="neon nav-link text-dark" asp-area="" asp-controller="User" asp-action="Info">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                            <partial name="_NavigationAnimation" />
                             @ViewData["Username"]
                             <i class="material-icons">person</i>
                         </a>
                         <a id="logout-link" class="neon nav-link text-dark" asp-area="">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
+                            <partial name="_NavigationAnimation" />
                             LogOut
                             <i style="font-size:24px" class="fa">&#xf08b;</i>
                         </a>
