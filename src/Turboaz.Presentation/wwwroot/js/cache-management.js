@@ -1,3 +1,7 @@
 function clearCache() {
-    window.location.reload(true);
+    $(document).ready(function () {
+        $('body').load(function () {
+           $('body').css('background-image', 'url("../Wallpaper/Wallpaper.jpeg")');
+        });
+     });
 }
