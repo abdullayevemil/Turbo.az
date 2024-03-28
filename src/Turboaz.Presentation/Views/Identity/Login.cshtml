@@ -9,7 +9,7 @@
 <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins&amp;display=swap'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-<div class="wrapper main-info">
+<div class="wrapper">
     <div class="login-box">
         <div class="login-header">
             <span>@ViewData["Title"]</span>
@@ -34,7 +34,9 @@
                 </span>
             </div>
 
-            <div asp-validation-summary="All" class="text-danger"></div>
+            <br>
+            <div asp-validation-summary="All" class="text-danger text-center"></div>
+            <br>
 
             <div class="input-box">
                 <button type="submit" class="input-submit">Login</button>

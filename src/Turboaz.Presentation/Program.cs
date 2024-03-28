@@ -7,6 +7,7 @@ using Turboaz.Infrastructure.Repositories;
 using Turboaz.Core.Repositories;
 using Turboaz.Infrastructure.Services;
 using Turboaz.Core.Services;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,11 @@ builder.Services.AddScoped<IContextReader, HttpContextReader>();
 builder.Services.AddDbContext<MyDbContext>(dbContextOptionsBuilder =>
 {
     var connectionString = builder.Configuration.GetConnectionString("TurboazDb");
-    dbContextOptionsBuilder.UseSqlServer(connectionString);
+
+    dbContextOptionsBuilder.UseSqlServer(connectionString, o => 
+    {
+        o.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName);
+    });
 });
 
 builder.Services.AddIdentity<User, IdentityRole>(options =>

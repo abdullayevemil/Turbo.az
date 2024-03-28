@@ -20,7 +20,7 @@ async function deleteVehicle(id) {
 async function updateVehicle(id) {
     event.preventDefault();
     const form = document.getElementById('update-form');
-const formData = new FormData(form);
+    const formData = new FormData(form);
     let jsonData = {};
     for (let [key, value] of formData.entries()) {
         jsonData[key] = value;

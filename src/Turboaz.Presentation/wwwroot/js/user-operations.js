@@ -33,8 +33,7 @@ async function banUser(id) {
     }
 }
 
-async function deleteUser(id)
-{
+async function deleteUser(id) {
     if (confirm("Confirm that you want the user be deleted.")) {
         await fetch('http://localhost:8080/User/Delete/' + id,
             {
@@ -42,7 +41,7 @@ async function deleteUser(id)
             }).then(res => {
                 if (res.ok) {
                     let child = document.getElementById(id);
-                    
+
                     child.parentElement.removeChild(child);
                 } else if (res.status === 404) {
                     alert('Item not found.');
@@ -51,4 +50,26 @@ async function deleteUser(id)
                 }
             });
     }
+}
+
+async function updateProfile(id) {
+    event.preventDefault();
+    const form = document.getElementById('update-profile');
+    const formData = new FormData(form);
+    let jsonData = {};
+    for (let [key, value] of formData.entries()) {
+        jsonData[key] = value;
+    }
+
+    await fetch('/User/UpdateProfile/' + id, {
+        method: "PUT",
+        body: JSON.stringify(jsonData),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    }).then(data => {
+        fetch('http://localhost:8080/Identity/LogOut', {
+            method: 'DELETE'
+        }).then(res => window.location.href = "http://localhost:8080/Identity/Login")
+    });
 }

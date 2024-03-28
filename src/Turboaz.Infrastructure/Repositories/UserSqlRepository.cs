@@ -43,4 +43,25 @@ public class UserSqlRepository : IUserRepository
 
         await this.dbContext.SaveChangesAsync();
     }
+
+    public async Task ChangeProfilePhotoAsync(string id, string newPhotoUrl)
+    {
+        var user = await this.dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+
+        user!.ProfilePhotoUrl = newPhotoUrl;
+
+        await this.dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdateProfileAsync(string id, User user)
+    {
+        var oldUser = await this.dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+
+        oldUser!.Email = user.Email;
+        oldUser.Surname = user.Surname;
+        oldUser.UserName = user.UserName;
+        oldUser.PhoneNumber = user.PhoneNumber;
+
+        await this.dbContext.SaveChangesAsync();
+    }
 }

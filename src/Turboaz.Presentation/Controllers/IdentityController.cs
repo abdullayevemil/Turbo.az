@@ -21,7 +21,7 @@ public class IdentityController : Controller
         this.userRepository = userRepository;
 
         this.signInManager = signInManager;
-        
+
         this.identityService = identityService;
     }
 
@@ -35,7 +35,14 @@ public class IdentityController : Controller
         {
             var user = await userRepository.GetUserByUserNameAsync(dto.Login!);
 
-            await this.signInManager.PasswordSignInAsync(user!, dto.Password!, true, true);
+            var result = await this.signInManager.PasswordSignInAsync(user!, dto.Password!, true, true);
+
+            if (!result.Succeeded)
+            {
+                base.ModelState.AddModelError("Invalid argument", "Invalid login or password!");
+
+                return base.View("Login");
+            }
         }
         catch (Exception exception)
         {
@@ -51,13 +58,17 @@ public class IdentityController : Controller
     public IActionResult Register() => base.View();
 
     [HttpPost]
-    public async Task<IActionResult> Register([FromForm] RegisterDto dto)
+    public async Task<IActionResult> Register([FromForm] RegisterDto dto, [FromForm] IFormFile file)
     {
+        await this.UploadImage(dto.Login!, file);
+
+        dto.ProfilePhotoUrl = "Images/Profile/" + dto.Login + '_' + file.FileName;
+
         var result = await this.identityService.RegisterAsync(dto);
 
         if (!result.Succeeded)
         {
-            AddErrorsToModelState(result.Errors);
+            this.AddErrorsToModelState(result.Errors);
 
             return base.View("Register");
         }
@@ -71,21 +82,22 @@ public class IdentityController : Controller
     {
         await this.signInManager.SignOutAsync();
 
-        return base.Ok();
+        return base.RedirectToAction("Login");
     }
 
     [HttpGet]
+    [Authorize]
     public IActionResult ChangePassword() => base.View();
 
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> ChangePassword([FromForm] ChangePasswordDto changePasswordDto)
     {
-        var userName = base.HttpContext.User.Identity.Name;
+        var userName = base.HttpContext.User.Identity!.Name;
 
         var user = await this.userRepository.GetUserByUserNameAsync(userName!);
 
-        await this.identityService.ChangePassword(user, changePasswordDto.OldPassword!, changePasswordDto.NewPassword!);
+        await this.identityService.ChangePassword(user!, changePasswordDto.OldPassword!, changePasswordDto.NewPassword!);
 
         return base.RedirectToAction(actionName: "Info", controllerName: "User");
     }
@@ -96,5 +108,16 @@ public class IdentityController : Controller
         {
             base.ModelState.AddModelError(error.Code, error.Description);
         }
+    }
+
+    private async Task UploadImage(string username, IFormFile file)
+    {
+        var filename = $"{username}_{file.FileName}";
+
+        var destinationVehicleImagePath = $"wwwroot/Images/Profile/{filename}";
+
+        using var fileStream = System.IO.File.Create(destinationVehicleImagePath);
+
+        await file.CopyToAsync(fileStream);
     }
 }

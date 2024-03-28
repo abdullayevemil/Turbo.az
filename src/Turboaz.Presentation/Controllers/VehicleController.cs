@@ -55,7 +55,7 @@ public class VehicleController : Controller
     [HttpPost]
     public async Task<IActionResult> Create([FromForm] VehicleDto vehicleDto, [FromForm] IFormFileCollection files)
     {
-        await UploadImages(files);
+        await this.UploadImages(files);
 
         var vehicle = VehicleBuilder.Create(vehicleDto, default, base.HttpContext.User.Identity.Name);
 
@@ -67,9 +67,9 @@ public class VehicleController : Controller
         {
             if (isFirst)
             {
-                vehicle.FirstImageUrl = "Images/" + base.HttpContext.User.Identity.Name + '_' + file.FileName;
+                vehicle.FirstImageUrl = "Images/Vehicles/" + base.HttpContext.User.Identity.Name + '_' + file.FileName;
             }
-            stringBuilder.Append("Images/" + base.HttpContext.User.Identity.Name + '_' + file.FileName + ';');
+            stringBuilder.Append("Images/Vehicles/" + base.HttpContext.User.Identity.Name + '_' + file.FileName + ';');
         }
 
         vehicle.ImageUrls = stringBuilder.ToString();
@@ -115,7 +115,7 @@ public class VehicleController : Controller
         {
             filename = $"{base.HttpContext.User.Identity!.Name}_{file.FileName}";
 
-            destinationVehicleImagePath = $"wwwroot/Images/{filename}";
+            destinationVehicleImagePath = $"wwwroot/Images/Vehicles/{filename}";
 
             using var fileStream = System.IO.File.Create(destinationVehicleImagePath);
 

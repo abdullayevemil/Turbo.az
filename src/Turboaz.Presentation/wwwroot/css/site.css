@@ -1,5 +1,16 @@
-html {
+:root {
+  --background-color: rgb(13, 17, 22);
+  --header-background-color: rgb(2, 4, 8);
+}
+
+html,
+body {
   font-size: 14px;
+  height: 100%;
+}
+
+body {
+  background-color: var(--background-color);
 }
 
 @media (min-width: 768px) {
@@ -9,8 +20,7 @@ html {
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
+  margin-top: auto;
   width: 100%;
   white-space: nowrap;
   line-height: 60px;
@@ -139,7 +149,7 @@ header,
 nav.bg-white {
   position: sticky !important;
   top: 0;
-  background-color: #0d1117d9;
+  background-color: var(--header-background-color);
 }
 
 .vehicles-container {
@@ -200,15 +210,6 @@ img {
   --black-color: #000000;
 }
 
-body {
-  background-image: url("../Wallpaper/Wallpaper.jpeg");
-  filter: blur(10%);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
 a {
   text-decoration: none;
   color: var(--second-color);
@@ -225,15 +226,14 @@ a:hover {
   align-items: center;
   min-height: 100vh;
   font-size: 16px !important;
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .login-box {
   position: relative;
-  width: 450px;
+  margin-top: -90px;
+  width: 900px;
   backdrop-filter: blur(25px);
   border: 2px solid var(--primary-color);
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
   padding: 7.5em 2.5em 4em 2.5em;
   color: var(--second-color);
@@ -283,10 +283,13 @@ a:hover {
 }
 
 .input-box {
+  width: 100%;
+  text-align: center;
+  align-items: center;
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 30px 0;
+  margin: 40px 0;
 }
 
 .input-field {
@@ -338,7 +341,7 @@ a:hover {
 }
 
 .input-submit {
-  width: 100%;
+  width: 50%;
   height: 50px;
   background: #c6c3c3;
   font-size: 16px;
@@ -355,6 +358,8 @@ a:hover {
 
 .register {
   text-align: center;
+  align-items: center;
+  width: 100%;
 }
 
 .register a {
@@ -397,7 +402,6 @@ a:hover {
 .user-info,
 .vehicle-details,
 .user-details {
-  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 20px;
   padding: 15px;
   font-size: 20px;
@@ -604,5 +608,62 @@ div.site-info {
 }
 
 ul.main-data-list {
-  color: #03e9f4;
+  color: #19c602;
+}
+
+input.file {
+  height: 100%;
+  padding-top: -2px;
+}
+
+div.register {
+  display: flex;
+  flex-direction: row;
+  column-gap: 30px;
+}
+
+div.register > div {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+div.shadow {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+div.register > span {
+  text-align: center;
+  width: 100%;
+}
+
+.profile {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+}
+
+.change-operations {
+  align-items: stretch;
+  margin: 20px 60px;
+}
+
+.change-operations > a:nth-of-type(2) {
+  float: right;
+}
+
+.change-operations > a {
+  color: white;
+}
+
+.change-operations > a:hover {
+  color: white;
+}
+
+.profile-box {
+  padding: 100px 40px 40px;
+}
+
+.image-container {
+  align-items: center;
+  text-align: center;
 }

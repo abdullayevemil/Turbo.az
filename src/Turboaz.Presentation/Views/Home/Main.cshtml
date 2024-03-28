@@ -41,13 +41,20 @@
 </div>
 
 <div class="main-data main-info">
-    <ul class="main-data-list">
-        <li>
-            Current vehicle advertisements count: @Model.Count
-            <br>
-            Prices range: @Model.MinimalPrice $ — @Model.MaximalPrice $
-            <br>
-            Average price: @Model.AveragePrice $
-        </li>
-    </ul>
+    @if (@Model.Count == 0)
+    {
+        <div class="text-danger">Currently there are no vehicle advirtisements</div>
+    }
+    else
+    {
+        <ul class="main-data-list">
+            <li>
+                Current vehicle advertisements count: @Model.Count
+                <br>
+                Prices range: @Model.MinimalPrice $ — @Model.MaximalPrice $
+                <br>
+                Average price: @Model.AveragePrice $
+            </li>
+        </ul>
+    }
 </div>

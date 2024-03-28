@@ -25,7 +25,9 @@ public class IdentityService : IIdentityService
             Email = registerDto.Email,
             UserName = registerDto.Login,
             PhoneNumber = registerDto.PhoneNumber,
-            IsBanned = false
+            IsBanned = false,
+            Surname = registerDto.Surname,
+            ProfilePhotoUrl = registerDto.ProfilePhotoUrl
         };
 
         var result = await this.userManager.CreateAsync(newUser, registerDto.Password!);

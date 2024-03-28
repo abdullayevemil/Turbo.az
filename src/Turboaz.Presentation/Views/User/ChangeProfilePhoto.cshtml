@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Change profile photo";
+
+    string oldProfilePhotoUrl = ViewData["oldProfilePhotoUrl"].ToString();
+    string newProfilePhotoUrl = string.Empty;
+}
+
+<link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins&amp;display=swap'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="wrapper main-info">
+    <div class="login-box">
+        <div class="login-header" style="width: 40%;">
+            <span style="margin-left: 15px;">@ViewData["Title"]</span>
+        </div>
+        
+        <div class="image-container">
+            <img class="profile" src="~/@oldProfilePhotoUrl"/>
+        </div>
+
+        <form enctype="multipart/form-data" method="post" asp-controller="User" asp-action="ChangeProfilePhoto">
+            <div class="input-box">
+                <input type="file" name="file" id="file" asp-for="@newProfilePhotoUrl" class="file form-control custom-file-input" accept="image/*" required>
+                <label asp-for="@newProfilePhotoUrl" class="label form-label">Chosse new profile photo</label>
+            </div>
+
+            <div class="input-box">
+                <button type="submit" class="input-submit">Change photo</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
