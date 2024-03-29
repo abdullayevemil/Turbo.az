@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "All Vehicles";
 
-    var isAuthenticated = base.User.Identity.IsAuthenticated;
+    var isAuthenticated = base.User.Identity!.IsAuthenticated;
 
     var isAdmin = base.User.IsInRole("Admin");
 
@@ -12,10 +12,6 @@
     int? minimumPrice = default;
 
     int? maximumPrice = default;
-
-    int? minimumYear = default;
-    
-    int? maximumYear = default;
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>

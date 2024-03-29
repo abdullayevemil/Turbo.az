@@ -82,6 +82,15 @@
     }
 }
 
+.site-main-info > p {
+    display: inline;
+    margin: 50px 60px;
+}
+
+.site-main-info > p > span {
+    font-size: 30px;
+}
+
 .neon span {
     display: block;
     position: absolute;

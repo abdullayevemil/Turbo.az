@@ -6,6 +6,20 @@
     Welcome to <b>Turboaz</b> - Your Gateway to Dream Cars!
     <br>
     <br>
+    <div class="main-info">
+        @if (@Model.Count == 0)
+        {
+            <div class="text-info">Currently there are no vehicle advirtisements</div>
+        }
+        else
+        {
+            <div class="text-info site-main-info">
+                <p><span>@Model.Count</span> awesome car advertisements!</p>
+                <p>Prices from <span>@Model.MinimalPrice</span> $ to <span>@Model.MaximalPrice</span> $</p>
+                <p>Average price of <span>@Model.AveragePrice</span> $</p>
+            </div>
+        }
+    </div>
     <br>
     Discover the perfect fusion of cutting-edge technology, fashionable design, and a seamless user experience at
     Turboaz, your premier destination for buying and selling cars. Our platform is meticulously crafted to provide you
@@ -38,23 +52,4 @@
     <br>
     <br>
     Start your exhilarating journey with Turboaz today - because your dream car is just a click away!
-</div>
-
-<div class="main-data main-info">
-    @if (@Model.Count == 0)
-    {
-        <div class="text-danger">Currently there are no vehicle advirtisements</div>
-    }
-    else
-    {
-        <ul class="main-data-list">
-            <li>
-                Current vehicle advertisements count: @Model.Count
-                <br>
-                Prices range: @Model.MinimalPrice $ — @Model.MaximalPrice $
-                <br>
-                Average price: @Model.AveragePrice $
-            </li>
-        </ul>
-    }
 </div>

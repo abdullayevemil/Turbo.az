@@ -1,7 +1,7 @@
 @{
     ViewData["Title"] = "Change profile photo";
 
-    string oldProfilePhotoUrl = ViewData["oldProfilePhotoUrl"].ToString();
+    string oldProfilePhotoUrl = ViewData["oldProfilePhotoUrl"]!.ToString()!;
     string newProfilePhotoUrl = string.Empty;
 }
 

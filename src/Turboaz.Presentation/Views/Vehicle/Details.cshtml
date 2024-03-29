@@ -4,13 +4,11 @@
 @{
     ViewData["Title"] = "Details";
 
-    var isFirst = true;
+    var imageUrls = Model.ImageUrls!.Split(';');
 
-    var imageUrls = Model.ImageUrls.Split(';');
+    var user = await userRepository.GetUserByIdAsync(Model.UserId!);
 
-    var user = await userRepository.GetUserByIdAsync(Model.UserId);
-
-    var phoneNumber = user.PhoneNumber;
+    var phoneNumber = user!.PhoneNumber;
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>

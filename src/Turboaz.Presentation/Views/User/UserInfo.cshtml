@@ -8,6 +8,8 @@
     var photo = Model.ProfilePhotoUrl;
     var login = Model.UserName;
     var phoneNumber = Model.PhoneNumber;
+    
+    var isAdmin = base.User.IsInRole("Admin");
 }
 
 <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
@@ -49,14 +51,17 @@
 
             <div asp-validation-summary="All" class="text-danger"></div>
 
-            <div class="change-operations">
-                <a asp-controller="User" asp-action="ChangeProfilePhoto">Change profile image</a>
-                <a asp-controller="Identity" asp-action="ChangePassword">Change password</a>
-            </div>
-            
-            <div class="input-box">
-                <button type="submit" class="input-submit" onclick="updateProfile('@Model.Id')">Update profile</button>
-            </div>
+            @if(!isAdmin)
+            {
+                <div class="change-operations">
+                    <a asp-controller="User" asp-action="ChangeProfilePhoto">Change profile image</a>
+                    <a asp-controller="Identity" asp-action="ChangePassword">Change password</a>
+                </div>
+
+                <div class="input-box">
+                    <button type="submit" class="input-submit" onclick="updateProfile('@Model.Id')">Update profile</button>
+                </div>
+            }
         </form>
     </div>
 </div>

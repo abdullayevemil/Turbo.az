@@ -6,12 +6,12 @@
     bool isAdmin = base.User.IsInRole("Admin");
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 
 <div>
     @foreach (var user in Model)
     {
-        @if (user.UserName != "admin")
+        @if (user.UserName!.ToLower()! != "admin")
         {
             <div class="user-details" id="@user.Id">
                 <p><b>Login: </b>@user.UserName</p>

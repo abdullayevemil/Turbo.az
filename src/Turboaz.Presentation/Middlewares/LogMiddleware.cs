@@ -33,7 +33,7 @@ public class LogMiddleware : IMiddleware
 
             var url = httpContext.Request.GetDisplayUrl();
 
-            var userId = httpContext.Request.Cookies["Authorize"] is null ? default : Convert.ToInt16(dataProtector.Unprotect(httpContext.Request.Cookies["Authorize"]));
+            var userId = Convert.ToInt16(dataProtector.Unprotect(httpContext.Request.Cookies["Authorize"]!));
 
             var requestBody = string.Empty;
 
