@@ -1,0 +1,16 @@
+:root {
+    --background-color: white;
+    --header-background-color: rgb(234, 234, 234);
+    --navigation-color: #019198;
+    --body-color: rgb(0, 0, 0);
+    --vehicle-card-background-color: rgb(204, 225, 233);
+    --galery-navigation-buttons-background-color: rgba(0, 0, 0, 0.908);
+    --delete-link-color: red;
+    --link-color: rgb(0, 0, 0);
+    --shadow-color: rgba(255, 255, 255, 0.5);
+    --main-info-color: #19c602;
+    --primary-color: #c6c3c3;
+    --second-color: #000000;
+    --submit-background-color: #c6c3c3;
+    --black-color: #000000;
+  }

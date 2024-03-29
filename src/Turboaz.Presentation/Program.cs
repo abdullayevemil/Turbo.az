@@ -45,7 +45,6 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
 })
     .AddEntityFrameworkStores<MyDbContext>();
 
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())

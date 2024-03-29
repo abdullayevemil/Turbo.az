@@ -8,21 +8,28 @@
     ViewData["Title"] = "All Vehicles";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 
 @if (isAuthenticated)
 {
-    <a asp-controller="Vehicle" asp-action="Create">Create new vehicle</a>
-    <br>
-    <br>
-    <a asp-controller="Vehicle" asp-action="UserVehicles">My vehicles</a>
+    <div class="vehilce-operations-links-container">
+        <a asp-controller="Vehicle" asp-action="Create">
+            <i class="material-icons">add</i>
+            Create new vehicle
+        </a>
+        <a class="my-vehicles-link" asp-controller="Vehicle" asp-action="UserVehicles">My vehicles</a>
+    </div>
 }
 
 <div class="vehicles-container">
+    @if (!Model.Any())
+    {
+        <div class="text-info">Currently there are not any vehicle advertisements</div>
+    }
     @foreach (var vehicle in Model)
     {
         <div class="vehicle-info" id="@vehicle.Id">
-            <div>
+            <div class="vehilce-operations-links-container">
                 <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@vehicle.Id">
                     <div>
                         @if (@vehicle.FirstImageUrl is not null)
