@@ -7,6 +7,11 @@ public class HttpContextReader : IContextReader
 {
     public async Task<string?> ReadRequest(Stream request)
     {
+        if (request is null)
+        {
+            throw new ArgumentNullException("Request stream cannot be null");
+        }
+
         request.Position = 0;
 
         StreamReader requestReader = new(request, Encoding.UTF8);
@@ -20,6 +25,11 @@ public class HttpContextReader : IContextReader
 
     public async Task<string?> ReadResponse(Stream response)
     {
+        if (response is null)
+        {
+            throw new ArgumentNullException("Response stream cannot be null");
+        }
+
         Stream originalBody = response;
 
         var responseBody = string.Empty;

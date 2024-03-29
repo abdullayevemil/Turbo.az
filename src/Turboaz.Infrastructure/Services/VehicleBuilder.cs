@@ -7,6 +7,16 @@ public class VehicleBuilder
 {
     public static Vehicle Create(VehicleDto vehicleDto, int id, string userId)
     {
+        if(vehicleDto is null)
+        {
+            throw new ArgumentNullException("Dto object cannot be null");
+        }
+
+        if(userId is null)
+        {
+            throw new ArgumentNullException("Id cannot be null");
+        }
+
         return new Vehicle
         {
             Id = id,
