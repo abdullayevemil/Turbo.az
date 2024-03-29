@@ -5,12 +5,12 @@ namespace Turboaz.Infrastructure.Services;
 
 public class VehicleBuilder
 {
-    public static Vehicle Create(VehicleDto vehicleDto, int id, string userName)
+    public static Vehicle Create(VehicleDto vehicleDto, int id, string userId)
     {
         return new Vehicle
         {
             Id = id,
-            UserLogin = userName,
+            UserId = userId,
             BrandName = vehicleDto.BrandName,
             ModelName = vehicleDto.ModelName,
             Price = vehicleDto.Price,
@@ -39,8 +39,6 @@ public class VehicleBuilder
         vehicleToUpdate.TransmissionType = newVehicle.TransmissionType;
 
         vehicleToUpdate.Drivetrain = newVehicle.Drivetrain;
-
-        vehicleToUpdate.UserLogin = newVehicle.UserLogin;
 
         vehicleToUpdate.Color = newVehicle.Color;
 

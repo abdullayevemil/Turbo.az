@@ -25,8 +25,6 @@ builder.Services.AddScoped<IUserRepository, UserSqlRepository>();
 
 builder.Services.AddScoped<ICustomLogger, SqlLogger>();
 
-builder.Services.AddScoped<IIdentityService, IdentityService>();
-
 builder.Services.AddScoped<IContextReader, HttpContextReader>();
 
 builder.Services.AddDbContext<MyDbContext>(dbContextOptionsBuilder =>

@@ -54,3 +54,51 @@ h1.text-center {
 .my-vehicles-link {
 	float: right;
 }
+
+.vehicle-search-container {
+    width: 100%;
+    margin: 60px 0;
+}
+
+input.vehicle-search {
+    padding: 2px 8px;
+    height: 40px;
+    width: 60%;
+    border-radius: 8px;
+    background-color: white;
+    font-weight: 400;
+    border: gray 1px solid;
+    text-align: left;
+}
+
+input.vehicle-search:focus {
+    transform: none;
+    outline: none;
+}
+
+button.vehicle-search {
+    outline: none;
+    border: gray 1px solid;
+    padding: 0;
+    height: 40px;
+    width: 120px;
+    color: white;
+    text-transform: none;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+button.vehicle-search:hover {
+    background-color: var(--navigation-color);
+}
+
+.vehicle-filter {
+	padding: 2px 8px;
+    height: 40px;
+    width: 30%;
+    border-radius: 8px;
+    background-color: white;
+    font-weight: 400;
+    border: gray 1px solid;
+    text-align: left;
+}

@@ -301,7 +301,7 @@ namespace Turboaz.Presentation.Migrations
                     b.Property<int?>("TransmissionType")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserLogin")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

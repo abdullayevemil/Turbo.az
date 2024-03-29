@@ -8,7 +8,7 @@
 
     var imageUrls = Model.ImageUrls.Split(';');
 
-    var user = await userRepository.GetUserByUserNameAsync(Model.UserLogin);
+    var user = await userRepository.GetUserByIdAsync(Model.UserId);
 
     var phoneNumber = user.PhoneNumber;
 }
@@ -43,7 +43,7 @@
         <p>Drivetrain: @Model.Drivetrain.ToString()</p>
         <br>
         <img src="~/@user.ProfilePhotoUrl"/>
-        <p>@Model.UserLogin
+        <p>@user.UserName
             <i class="fa fa-phone" style="font-size:24px; color: green; margin: 0 5px 0 20px;"></i>
             @phoneNumber
         </p>

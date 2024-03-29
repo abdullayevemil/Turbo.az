@@ -47,9 +47,9 @@ public class VehicleSqlRepository : IVehicleRepository
         return vehicle;
     }
 
-    public IEnumerable<Vehicle?> GetUserVehicles(string userLogin)
+    public IEnumerable<Vehicle?> GetUserVehicles(string userId)
     {
-        var userVehicles = dbContext.Vehicles.Where(vehicle => vehicle.UserLogin == userLogin).AsEnumerable();
+        var userVehicles = dbContext.Vehicles.Where(vehicle => vehicle.UserId == userId).AsEnumerable();
 
         return userVehicles;
     }

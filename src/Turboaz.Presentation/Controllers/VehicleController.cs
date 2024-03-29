@@ -13,26 +13,46 @@ namespace Turboaz.Presentation.Controllers;
 public class VehicleController : Controller
 {
     private readonly IVehicleRepository vehicleRepository;
-    public VehicleController(IVehicleRepository vehicleRepository) => this.vehicleRepository = vehicleRepository;
+    private readonly IUserRepository userRepository;
+
+    public VehicleController(IVehicleRepository vehicleRepository, IUserRepository userRepository)
+    {
+        this.vehicleRepository = vehicleRepository;
+
+        this.userRepository = userRepository;
+    }
 
     [HttpGet]
     [AllowAnonymous]
     [ActionName("Index")]
     [Route("[controller]/[action]")]
-    public IActionResult ShowAllVehicles()
+    [Route("[controller]/[action]/{search}")]
+    public IActionResult ShowAllVehicles(string? search = null)
     {
         var vehicles = this.vehicleRepository.GetAllVehicles();
 
-        return base.View(model: vehicles);
+        if (search is null)
+        {
+            return base.View(model: vehicles);
+        }
+
+        var searchedVehicles = vehicles.Where(vehicle => 
+        vehicle.BrandName!.ToLower().Contains(search.ToLower())
+        || vehicle.ModelName!.ToLower().Contains(search.ToLower())
+        || search.ToLower().Contains(vehicle.BrandName.ToLower())
+        || search.ToLower().Contains(vehicle.ModelName.ToLower())
+        );
+
+        return base.View(model: searchedVehicles);
     }
 
     [HttpGet]
     [AllowAnonymous]
     [ActionName("Details")]
-    [Route("[controller]/Index/{id}")]
+    [Route("[controller]/[action]/{id}")]
     public async Task<IActionResult> ShowVehicleDetails(int id)
     {
-        var selectedVehicle = await vehicleRepository.GetVehicleByIdAsync(id);
+        var selectedVehicle = await this.vehicleRepository.GetVehicleByIdAsync(id);
 
         return base.View(model: selectedVehicle);
     }
@@ -40,11 +60,13 @@ public class VehicleController : Controller
     [HttpGet]
     [ActionName("UserVehicles")]
     [Route("[controller]/UserVehicles")]
-    public IActionResult ShowUserVehicles()
+    public async Task<IActionResult> ShowUserVehicles()
     {
-        var userLogin = base.HttpContext.User.Identity!.Name;
+        var userName = base.HttpContext.User.Identity!.Name;
 
-        var userVehicles = vehicleRepository.GetUserVehicles(userLogin);
+        var user = await this.userRepository.GetUserByUserNameAsync(userName);
+
+        var userVehicles = this.vehicleRepository.GetUserVehicles(user!.Id);
 
         return base.View(model: userVehicles);
     }
@@ -57,7 +79,11 @@ public class VehicleController : Controller
     {
         await this.UploadImages(files);
 
-        var vehicle = VehicleBuilder.Create(vehicleDto, default, base.HttpContext.User.Identity.Name);
+        var userName = base.HttpContext.User.Identity!.Name;
+
+        var user = await this.userRepository.GetUserByUserNameAsync(userName);
+
+        var vehicle = VehicleBuilder.Create(vehicleDto, default, user!.Id);
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -67,9 +93,9 @@ public class VehicleController : Controller
         {
             if (isFirst)
             {
-                vehicle.FirstImageUrl = "Images/Vehicles/" + base.HttpContext.User.Identity.Name + '_' + file.FileName;
+                vehicle.FirstImageUrl = "Images/Vehicles/" + userName + '_' + file.FileName;
             }
-            stringBuilder.Append("Images/Vehicles/" + base.HttpContext.User.Identity.Name + '_' + file.FileName + ';');
+            stringBuilder.Append("Images/Vehicles/" + userName + '_' + file.FileName + ';');
         }
 
         vehicle.ImageUrls = stringBuilder.ToString();
@@ -77,6 +103,23 @@ public class VehicleController : Controller
         await this.vehicleRepository.InsertVehicleAsync(vehicle);
 
         return base.RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public IActionResult Filter(int? minimumPrice, int? maximumPrice)
+    {
+        var vehicles = this.vehicleRepository.GetAllVehicles();
+
+        if (minimumPrice is null || maximumPrice is null)
+        {
+            return base.View(viewName: "Index", model: vehicles);
+        }
+
+        var filteredVehicles = vehicles.Where(vehicle =>
+            vehicle.Price >= minimumPrice && vehicle.Price <= maximumPrice
+        );
+
+        return base.View(viewName: "Index", model: filteredVehicles);
     }
 
     [HttpDelete]
@@ -98,7 +141,7 @@ public class VehicleController : Controller
     [HttpPut]
     public async Task<IActionResult> Update(int id, [FromBody] VehicleDto vehicleDto)
     {
-        var vehicle = VehicleBuilder.Create(vehicleDto, id, base.HttpContext.User.Identity.Name);
+        var vehicle = VehicleBuilder.Create(vehicleDto, id, base.HttpContext.User.Identity!.Name);
 
         await this.vehicleRepository.UpdateVehicleAsync(id, vehicle);
 

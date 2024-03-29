@@ -28,20 +28,10 @@ window.addEventListener("load", (event) => {
 
     let link = document.getElementById('custom-styles');
 
-    if (link.href.includes('dark'))
+    if (localStorage.getItem('theme') == 'light')
     {
         let newLink = link.href.replace("dark", "light");
 
         link.href = newLink;
-
-        localStorage.setItem("theme", "light");
-    }
-    else
-    {
-        let newLink = link.href.replace("light", "dark");
-
-        link.href = newLink;
-
-        localStorage.setItem("theme", "dark");
     }
 });

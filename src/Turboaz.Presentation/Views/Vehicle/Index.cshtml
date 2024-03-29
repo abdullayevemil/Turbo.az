@@ -1,14 +1,35 @@
 @model IEnumerable<Vehicle>
 
 @{
-    bool isAuthenticated = base.User.Identity.IsAuthenticated;
-
-    bool isAdmin = base.User.IsInRole("Admin");
-
     ViewData["Title"] = "All Vehicles";
+
+    var isAuthenticated = base.User.Identity.IsAuthenticated;
+
+    var isAdmin = base.User.IsInRole("Admin");
+
+    var search = string.Empty;
+
+    int? minimumPrice = default;
+
+    int? maximumPrice = default;
+
+    int? minimumYear = default;
+    
+    int? maximumYear = default;
 }
 
 <h1 class="text-center">@ViewData["Title"]</h1>
+
+<form class="vehicle-search-container text-center" method="get" asp-controller="Vehicle" asp-action="Index" asp-route-search="@search">
+    <input value="@search" asp-for="@search" id="search-input" placeholder="Search Vehicles" class="vehicle-search" type="text"/>
+    <button class="btn submit-button vehicle-search" type="submit">Search</button>
+</form>
+
+<form class="vehicle-search-container text-center" method="get" asp-controller="Vehicle" asp-action="Filter" asp-route-minimumPrice="@minimumPrice" asp-route-maximumPrice="@maximumPrice">
+    <input value="@minimumPrice" asp-for="@minimumPrice" id="search-input" placeholder="Minimum price" class="vehicle-filter" type="number" min="0"/>
+    <input value="@maximumPrice" asp-for="@maximumPrice" id="search-input" placeholder="Maximum price" class="vehicle-filter" type="number" min="0"/>
+    <button class="btn submit-button vehicle-search" type="submit">Apply filter</button>
+</form>
 
 @if (isAuthenticated)
 {

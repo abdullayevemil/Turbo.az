@@ -26,6 +26,13 @@ public class UserSqlRepository : IUserRepository
         return user;
     }
 
+    public async Task<User?> GetUserByIdAsync(string id)
+    {
+        var user = await this.dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
+
+        return user;
+    }
+
     public async Task BanUserAsync(string id)
     {
         var user = await this.dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
@@ -58,8 +65,11 @@ public class UserSqlRepository : IUserRepository
         var oldUser = await this.dbContext.Users.FirstOrDefaultAsync(user => user.Id == id);
 
         oldUser!.Email = user.Email;
+
         oldUser.Surname = user.Surname;
+
         oldUser.UserName = user.UserName;
+
         oldUser.PhoneNumber = user.PhoneNumber;
 
         await this.dbContext.SaveChangesAsync();

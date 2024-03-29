@@ -66,7 +66,7 @@ public class UserController : Controller
 
         await this.userRepository.UpdateProfileAsync(id, user);
 
-        return base.RedirectToAction(actionName: "Logout", controllerName: "Identity");
+        return base.RedirectToAction(actionName: "Login", controllerName: "Identity");
     }
 
     [HttpGet]

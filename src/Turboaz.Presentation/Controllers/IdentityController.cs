@@ -12,17 +12,20 @@ namespace Turboaz.Presentation.Controllers;
 [AllowAnonymous]
 public class IdentityController : Controller
 {
-    private readonly IIdentityService identityService;
+    private readonly UserManager<User> userManager;
+    private readonly RoleManager<IdentityRole> roleManager;
     private readonly IUserRepository userRepository;
     private readonly SignInManager<User> signInManager;
 
-    public IdentityController(IIdentityService identityService, IUserRepository userRepository, SignInManager<User> signInManager)
+    public IdentityController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IUserRepository userRepository, SignInManager<User> signInManager)
     {
+        this.userManager = userManager;
+
+        this.roleManager = roleManager;
+
         this.userRepository = userRepository;
 
         this.signInManager = signInManager;
-
-        this.identityService = identityService;
     }
 
     [HttpGet]
@@ -43,10 +46,19 @@ public class IdentityController : Controller
 
                 return base.View("Login");
             }
+
+            if (dto.Login!.ToLower() == "admin")
+            {
+                var role = new IdentityRole { Name = "Admin" };
+
+                await roleManager.CreateAsync(role);
+
+                await userManager.AddToRoleAsync(user!, role.Name);
+            }
         }
-        catch (Exception exception)
+        catch (Exception)
         {
-            base.ModelState.AddModelError(exception.GetType().Name, exception.Message);
+            base.ModelState.AddModelError("Invalid argument", "Invalid login or password!");
 
             return base.View("Login");
         }
@@ -64,7 +76,17 @@ public class IdentityController : Controller
 
         dto.ProfilePhotoUrl = "Images/Profile/" + dto.Login + '_' + file.FileName;
 
-        var result = await this.identityService.RegisterAsync(dto);
+        var user = new User
+        {
+            Email = dto.Email,
+            UserName = dto.Login,
+            PhoneNumber = dto.PhoneNumber,
+            IsBanned = false,
+            Surname = dto.Surname,
+            ProfilePhotoUrl = dto.ProfilePhotoUrl
+        };
+
+        var result = await this.userManager.CreateAsync(user, dto.Password!);
 
         if (!result.Succeeded)
         {
@@ -97,7 +119,7 @@ public class IdentityController : Controller
 
         var user = await this.userRepository.GetUserByUserNameAsync(userName!);
 
-        await this.identityService.ChangePassword(user!, changePasswordDto.OldPassword!, changePasswordDto.NewPassword!);
+        await userManager.ChangePasswordAsync(user!, changePasswordDto.OldPassword!, changePasswordDto.NewPassword!);
 
         return base.RedirectToAction(actionName: "Info", controllerName: "User");
     }

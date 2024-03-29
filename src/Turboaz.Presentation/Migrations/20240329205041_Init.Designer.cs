@@ -12,8 +12,8 @@ using Turboaz.Infrastructure.Data;
 namespace Turboaz.Presentation.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240328051159_OInit")]
-    partial class OInit
+    [Migration("20240329205041_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -304,7 +304,7 @@ namespace Turboaz.Presentation.Migrations
                     b.Property<int?>("TransmissionType")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserLogin")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

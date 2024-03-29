@@ -4,7 +4,7 @@ public class Vehicle
 {
     public int Id { get; set; }
     
-    public string? UserLogin { get; set; }
+    public string? UserId { get; set; }
     
     public double? Price { get; set; }
     
