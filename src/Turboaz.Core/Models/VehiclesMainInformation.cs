@@ -8,5 +8,5 @@ public class VehiclesMainInformation
     
     public double? MaximalPrice { get; set; }
     
-    public double? AveragePrice { get; set; }
+    public int? AveragePrice { get; set; }
 }

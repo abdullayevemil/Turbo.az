@@ -12,7 +12,7 @@ using Turboaz.Infrastructure.Data;
 namespace Turboaz.Presentation.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20240329205041_Init")]
+    [Migration("20240329224906_Init")]
     partial class Init
     {
         /// <inheritdoc />

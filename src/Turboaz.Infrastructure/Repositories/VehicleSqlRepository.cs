@@ -34,7 +34,7 @@ public class VehicleSqlRepository : IVehicleRepository
             Count = vehiclesCount,
             MinimalPrice = minimalPrice,
             MaximalPrice = maximalPrice,
-            AveragePrice = averagePrice
+            AveragePrice = Convert.ToInt32(averagePrice)
         };
 
         return vehiclesInformation;
