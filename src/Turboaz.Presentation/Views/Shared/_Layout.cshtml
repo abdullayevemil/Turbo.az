@@ -2,8 +2,6 @@
     var isAuthenticated = base.User.Identity.IsAuthenticated;
 
     var isAdmin = base.User.IsInRole("Admin");
-
-    var theme = TempData["Theme"];
 }
 
 <!DOCTYPE html>
@@ -14,14 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Turbo.az</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    @if (theme == "dark")
-    {
-        <link rel="stylesheet" href="~/css/dark-theme-site.css" asp-append-version="true" />
-    }
-    else
-    {
-        <link rel="stylesheet" href="~/css/light-theme-site.css" asp-append-version="true" />
-    }
+    <link id="custom-styles" rel="stylesheet" href="~/css/dark-theme-site.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -88,7 +79,7 @@
                             </a>
                         </li>
                     </ul>
-                    <a class="neon nav-link text-dark" asp-area="" asp-controller="SiteManagement" asp-action="ChangeTheme">
+                    <a class="neon nav-link text-dark" asp-area="" onclick="switchTheme()">
                         <partial name="_NavigationAnimation" />
                         <i class="material-icons">palette</i>
                     </a>
@@ -123,6 +114,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <script src="~/js/change-theme.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
     <footer class="footer text-muted">
         <div class="container">
