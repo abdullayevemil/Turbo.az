@@ -1,0 +1,126 @@
+﻿@{
+    var isAuthenticated = base.User.Identity!.IsAuthenticated;
+
+    var isAdmin = base.User!.IsInRole("Admin");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Turbo.az</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link id="custom-styles" rel="stylesheet" href="~/css/dark-theme-site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="neon navbar-brand" asp-area="" asp-controller="Home" asp-action="Main">
+                    <partial name="_NavigationAnimation" />
+                    Turbo.az
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (isAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">
+                                    <partial name="_NavigationAnimation" />
+                                    Home
+                                    <i class="material-icons">home</i>
+                                </a>
+                            </li>
+                            @if (isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="neon nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">
+                                        <partial name="_NavigationAnimation" />
+                                        Users
+                                        <i class="material-icons">&#xe7ef;</i>
+                                    </a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Login">
+                                    <partial name="_NavigationAnimation" />
+                                    Login
+                                    <i class="material-icons">&#xe7fe;</i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Identity" asp-action="Register">
+                                    <partial name="_NavigationAnimation" />
+                                    Register
+                                    <i class="material-icons">&#xe7fe;</i>
+                                </a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="neon nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="Index">
+                                <partial name="_NavigationAnimation" />
+                                Vehicles
+                                <i class="material-icons">directions_car</i>
+                            </a>
+                        </li>
+                    </ul>
+                    <a class="neon nav-link text-dark" asp-area="" onclick="switchTheme()">
+                        <partial name="_NavigationAnimation" />
+                        <i class="material-icons">brightness_6</i>
+                    </a>
+                    @if (isAuthenticated)
+                    {
+                        <a class="neon nav-link text-dark" asp-area="" asp-controller="User" asp-action="Info">
+                            <partial name="_NavigationAnimation" />
+                            Profile
+                            <i class="material-icons">person</i>
+                        </a>
+                        <a id="logout-link" class="neon nav-link text-dark" asp-area="">
+                            <partial name="_NavigationAnimation" />
+                            LogOut
+                            <i style="font-size:24px" class="fa">&#xf08b;</i>
+                        </a>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+        <br>
+    </div>
+    <br>
+    <br>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="~/js/login-form.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+    <script src="~/js/change-theme.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <footer class="footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Turbo.az
+        </div>
+    </footer>
+</body>
+
+</html>

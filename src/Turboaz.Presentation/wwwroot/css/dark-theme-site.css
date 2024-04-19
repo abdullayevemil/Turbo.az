@@ -1,0 +1,232 @@
+@import url("dark-theme-variables.css");
+@import url("navigation.css");
+@import url("identity.css");
+@import url("vehicle.css");
+@import url("galery.css");
+@import url("icons.css");
+
+html,
+body {
+	font-size: 14px;
+	height: 100%;
+}
+
+body {
+	background-color: var(--background-color);
+}
+
+@media (min-width: 768px) {
+	html {
+		font-size: 16px;
+	}
+}
+
+.footer {
+	margin-top: auto;
+	width: 100%;
+	white-space: nowrap;
+	line-height: 60px;
+}
+
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+	box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+body {
+	color: var(--body-color);
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: "poppins", sans-serif;
+}
+
+a {
+	text-decoration: none;
+	color: var(--second-color);
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.main-info {
+	margin-top: 40px;
+}
+
+.main-info,
+.user-info,
+.vehicle-details,
+.user-details {
+	border-radius: 20px;
+	padding: 15px;
+	font-size: 20px;
+	color: var(--body-color);
+}
+
+.vehicle-details {
+	display: flex;
+	flex-direction: row;
+}
+
+.vehicle-details>p,
+.user-details>p {
+	display: inline;
+}
+
+.details-image {
+	width: 600px;
+	height: 400px;
+	margin-right: 40px;
+}
+
+.user-details {
+	margin: 20px 0;
+}
+
+select {
+	width: 170px;
+	font-size: 22px !important;
+}
+
+.select-label {
+	margin-left: 120px;
+}
+
+select:nth-of-type(2) {
+	margin-left: 80px;
+}
+
+.submit-button {
+	width: 200px;
+	height: 40px;
+	position: relative;
+	display: inline-block;
+	margin: 8px 0;
+	background-color: transparent;
+	color: var(--navigation-color) !important;
+	text-decoration: none;
+	transition: 0.5s;
+	overflow: hidden;
+	border: 1px var(--navigation-color) solid;
+}
+
+.submit-button:hover {
+	background: var(--navigation-color);
+	color: white !important;
+	box-shadow: 0 0 5px var(--navigation-color),
+		0 0 25px var(--navigation-color),
+		0 0 50px var(--navigation-color),
+		0 0 200px var(--navigation-color);
+}
+
+.back-link {
+	font-size: 20px;
+}
+
+.back-link:hover {
+	text-decoration: none;
+	color: var(--navigation-color) !important;
+}
+
+a.link:hover {
+	text-decoration: none;
+	color: var(--navigation-color) !important;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+a.delete-link:hover {
+	color: var(--delete-link-color) !important;
+}
+
+.account-management-link {
+	cursor: default;
+}
+
+.account-management-link:hover {
+	text-decoration: none;
+}
+
+div.main-data {
+	margin-top: 20px;
+	width: 430px;
+}
+
+div.site-info {
+	margin-top: 20px;
+}
+
+ul.main-data-list {
+	color: var(--main-info-color);
+}
+
+input.file {
+	height: 100%;
+	padding-top: -2px;
+}
+
+div.register {
+	display: flex;
+	flex-direction: row;
+	column-gap: 30px;
+}
+
+div.register>div {
+	margin-left: 40px;
+	margin-right: 40px;
+}
+
+div.shadow {
+	background-color: var(--shadow-color) !important;
+}
+
+div.register>span {
+	text-align: center;
+	width: 100%;
+}
+
+.profile {
+	width: 300px;
+	height: 300px;
+	border-radius: 50%;
+}
+
+.change-operations {
+	align-items: stretch;
+	margin: 20px 60px;
+}
+
+.change-operations>a:nth-of-type(2) {
+	float: right;
+}
+
+.change-operations>a {
+	color: var(--link-color);
+}
+
+.change-operations>a:hover {
+	color: var(--link-color);
+}
+
+.profile-box {
+	padding: 100px 40px 40px;
+}
+
+.image-container {
+	align-items: center;
+	text-align: center;
+}

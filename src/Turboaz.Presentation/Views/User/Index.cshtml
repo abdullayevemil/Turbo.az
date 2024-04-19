@@ -1,0 +1,48 @@
+@model IEnumerable<User>
+
+@{
+    ViewData["Title"] = "All Users";
+
+    bool isAdmin = base.User.IsInRole("Admin");
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<div>
+    @foreach (var user in Model)
+    {
+        @if (user.UserName!.ToLower()! != "admin")
+        {
+            <div class="user-details" id="@user.Id">
+                <p><b>Login: </b>@user.UserName</p>
+                <br>
+                <p><b>Email: </b>@user.Email</p>
+                <br>
+                <p><b>Phone: </b>@user.PhoneNumber</p>
+                <br>
+                @if (user.IsBanned)
+                {
+                    <a class="account-management-link" style="color: green;" onclick="banUser('@user.Id')" id="link-@user.Id">
+                        activate user account
+                    </a>
+                }
+                else
+                {
+                    <a class="account-management-link" style="color: red;" onclick="banUser('@user.Id')" id="link-@user.Id">
+                        ban user account
+                    </a>
+                }
+                <br>
+                <br>
+                @if (isAdmin)
+                {
+                    <a class="delete-link" onclick="deleteUser('@user.Id')" id="delete-user-link">
+                        <i class="fa fa-trash" style="font-size:24px"></i>
+                    </a>
+                }
+            </div>
+        }
+    }
+</div>
+
+<script src="~/js/user-operations.js"></script>

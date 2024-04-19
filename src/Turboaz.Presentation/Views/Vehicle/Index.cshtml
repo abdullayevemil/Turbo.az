@@ -1,0 +1,77 @@
+@model IEnumerable<Vehicle>
+
+@{
+    ViewData["Title"] = "All Vehicles";
+
+    var isAuthenticated = base.User.Identity!.IsAuthenticated;
+
+    var isAdmin = base.User.IsInRole("Admin");
+
+    var search = string.Empty;
+
+    int? minimumPrice = default;
+
+    int? maximumPrice = default;
+}
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<form class="vehicle-search-container text-center" method="get" asp-controller="Vehicle" asp-action="Index" asp-route-search="@search">
+    <input value="@search" asp-for="@search" id="search-input" placeholder="Search Vehicles" class="vehicle-search" type="text"/>
+    <button class="btn submit-button vehicle-search" type="submit">Search</button>
+</form>
+
+<form class="vehicle-search-container text-center" method="get" asp-controller="Vehicle" asp-action="Filter" asp-route-minimumPrice="@minimumPrice" asp-route-maximumPrice="@maximumPrice">
+    <input value="@minimumPrice" asp-for="@minimumPrice" id="search-input" placeholder="Minimum price" class="vehicle-filter" type="number" min="0"/>
+    <input value="@maximumPrice" asp-for="@maximumPrice" id="search-input" placeholder="Maximum price" class="vehicle-filter" type="number" min="0"/>
+    <button class="btn submit-button vehicle-search" type="submit">Apply filter</button>
+</form>
+
+@if (isAuthenticated)
+{
+    <div class="vehilce-operations-links-container">
+        <a asp-controller="Vehicle" asp-action="Create">
+            <i class="material-icons">add</i>
+            Create new vehicle
+        </a>
+        <a class="my-vehicles-link" asp-controller="Vehicle" asp-action="UserVehicles">My vehicles</a>
+    </div>
+}
+
+<div class="vehicles-container">
+    @if (!Model.Any())
+    {
+        <div class="text-info">Currently there are not any vehicle advertisements</div>
+    }
+    @foreach (var vehicle in Model)
+    {
+        <div class="vehicle-info" id="@vehicle.Id">
+            <div class="vehilce-operations-links-container">
+                <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@vehicle.Id">
+                    <div>
+                        @if (@vehicle.FirstImageUrl is not null)
+                        {
+                            <img src="~/@vehicle.FirstImageUrl" alt="image of car" />
+                        }
+                        <p><b><i>@vehicle.BrandName @vehicle.ModelName</i></b></p>
+                        <p><i>@vehicle.Price$, @vehicle.EngineVolume sm<sup>3</sup></i></p>
+                    </div>
+                </a>
+            </div>
+            <br>
+            @if (isAdmin)
+            {
+                <div>
+                    <a class="link" asp-controller="Vehicle" asp-action="Update" asp-route-id="@vehicle.Id">
+                        <i class="fa fa-edit" style="font-size:24px"></i>
+                    </a>
+                    <a class="link" onclick="deleteVehicle(@vehicle.Id)" id="delete-vehicle-link">
+                        <i class="fa fa-trash" style="font-size:24px"></i>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<script src="~/js/vehicle-operations.js"></script>

@@ -1,0 +1,51 @@
+@{
+    ViewData["Title"] = "Login";
+
+    string login = string.Empty;
+    string password = string.Empty;
+}
+
+<link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Poppins&amp;display=swap'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="wrapper">
+    <div class="login-box">
+        <div class="login-header">
+            <span>@ViewData["Title"]</span>
+        </div>
+        
+        <form asp-action="Login" method="post">
+            <div class="input-box">
+                <input asp-for="@login" type="text" class="input-field" required>
+                <label asp-for="@login" class="label">Login</label>
+                <i class="bx bx-user icon"></i>
+            </div>
+
+            <div class="input-box">
+                <input id="pass" asp-for="@password" type="password" class="input-field" autocomplete="off" required>
+                <label asp-for="@password" class="label">Password</label>
+                <i class="bx bx-lock-alt icon" id="show-password"></i>
+            </div>
+
+            <div class="register">
+                <span>Don't have an account?
+                    <a asp-action="Register">Register</a>
+                </span>
+            </div>
+
+            <br>
+            <div asp-validation-summary="All" class="text-danger text-center"></div>
+            <br>
+
+            <div class="input-box">
+                <button type="submit" class="input-submit">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
