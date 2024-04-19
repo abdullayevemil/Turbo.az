@@ -1,31 +1,27 @@
-using System.Data.SqlClient;
-using Dapper;
 using Turbo.az.Models;
+using Turbo.az.Repositories.Base;
 using Turbo.az.Services.Base;
 
 namespace Turbo.az.Services;
 
 public class SqlLogger : ICustomLogger
 {
-    private readonly string connectionString;
+    private bool isLoggingEnabled;
+    private readonly IConfiguration configuration;
+    private readonly ILogRepository logRepository;
 
-    private readonly bool isLoggingEnabled;
-    
-    public SqlLogger(string connectionString, bool isLoggingEnabled)
+    public SqlLogger(IConfiguration configuration, ILogRepository logRepository)
     {
-        this.connectionString = connectionString;
+        this.configuration = configuration;
+        
+        this.logRepository = logRepository;
 
-        this.isLoggingEnabled = isLoggingEnabled;
+        SetIsLoggerEnabled();
     }
 
-    public async Task Log(Log log)
-    {
-        using var connection = new SqlConnection(connectionString);
-
-        var logs = await connection.ExecuteAsync(
-            sql: "insert into Logs (UserId, Url, MethodType, StatusCode, RequestBody, ResponseBody) values (@UserId, @Url, @MethodType, @StatusCode, @RequestBody, @ResponseBody);",
-            param: log);
-    }
+    public async Task Log(Log log) => await logRepository.AddLogAsync(log);
 
     public bool IsLoggingEnabled() => isLoggingEnabled;
+
+    private void SetIsLoggerEnabled() => isLoggingEnabled = configuration.GetSection("isCustomLoggingEnabled").Get<bool>();
 }

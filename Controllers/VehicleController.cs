@@ -1,10 +1,11 @@
 #pragma warning disable CS8604
 
+using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Turbo.az.Dtos;
-using Turbo.az.Models;
 using Turbo.az.Repositories.Base;
+using Turbo.az.Services;
 
 namespace Turbo.az.Controllers;
 
@@ -15,17 +16,19 @@ public class VehicleController : Controller
     public VehicleController(IVehicleRepository vehicleRepository) => this.vehicleRepository = vehicleRepository;
 
     [HttpGet]
+    [AllowAnonymous]
     [ActionName("Index")]
     [Route("[controller]")]
     [Route("[controller]/[action]")]
-    public async Task<IActionResult> ShowAllVehicles()
+    public IActionResult ShowAllVehicles()
     {
-        var vehicles = await this.vehicleRepository.GetAllVehiclesAsync();
+        var vehicles = this.vehicleRepository.GetAllVehicles();
 
         return base.View(model: vehicles);
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [ActionName("Details")]
     [Route("[controller]/{id}")]
     [Route("[controller]/Index/{id}")]
@@ -39,11 +42,11 @@ public class VehicleController : Controller
     [HttpGet]
     [ActionName("UserVehicles")]
     [Route("[controller]/UserVehicles")]
-    public async Task<IActionResult> ShowUserVehicles()
+    public IActionResult ShowUserVehicles()
     {
         var userLogin = base.HttpContext.User.Identity!.Name;
 
-        var userVehicles = await vehicleRepository.GetUserVehiclesAsync(userLogin);
+        var userVehicles = vehicleRepository.GetUserVehicles(userLogin);
 
         return base.View(model: userVehicles);
     }
@@ -54,23 +57,74 @@ public class VehicleController : Controller
 
     [HttpPost]
     [Route("[controller]/[action]")]
-    public async Task<IActionResult> Create([FromForm] VehicleDto vehicleDto)
+    public async Task<IActionResult> Create([FromForm] VehicleDto vehicleDto, [FromForm] IFormFileCollection files)
     {
-        await this.vehicleRepository.InsertVehicleAsync(new Vehicle
+        await UploadImages(files);
+
+        var vehicle = VehicleBuilder.Create(vehicleDto, default, base.HttpContext.User.Identity.Name);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        bool isFirst = true;
+
+        foreach (var file in files)
         {
-            UserLogin = base.HttpContext.User.Identity!.Name,
-            BrandName = vehicleDto.BrandName,
-            ModelName = vehicleDto.ModelName,
-            Price = vehicleDto.Price,
-            EngineVolume = vehicleDto.EngineVolume,
-            ImageUrl = vehicleDto.ImageUrl,
-            HorsePowers = vehicleDto.HorsePowers,
-            SeatsCount = vehicleDto.SeatsCount,
-            Color = vehicleDto.Color,
-            TransmissionType = vehicleDto.TransmissionType,
-            Drivetrain = vehicleDto.Drivetrain,
-        });
+            if (isFirst)
+            {
+                vehicle.FirstImageUrl = "Images/" + base.HttpContext.User.Identity.Name + '_' + file.FileName;
+            }
+            stringBuilder.Append("Images/" + base.HttpContext.User.Identity.Name + '_' + file.FileName + ';');
+        }
+
+        vehicle.ImageUrls = stringBuilder.ToString();
+
+        await this.vehicleRepository.InsertVehicleAsync(vehicle);
 
         return base.RedirectToAction("Index");
+    }
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete(int id)
+    {
+        await this.vehicleRepository.DeleteVehicleAsync(id);
+
+        return base.Ok();
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Update(int id)
+    {
+        var vehicle = await this.vehicleRepository.GetVehicleByIdAsync(id);
+
+        return base.View(model: vehicle);
+    }
+
+    [HttpPut]
+    [Consumes("application/json")]
+    public async Task<IActionResult> Update(int id, [FromBody] VehicleDto vehicleDto)
+    {
+        var vehicle = VehicleBuilder.Create(vehicleDto, id, base.HttpContext.User.Identity.Name);
+
+        await this.vehicleRepository.UpdateVehicleAsync(id, vehicle);
+
+        return base.RedirectToAction(actionName: "Index");
+    }
+
+    public async Task UploadImages(IFormFileCollection files)
+    {
+        string destinationVehicleImagePath;
+
+        string filename;
+
+        foreach (var file in files)
+        {
+            filename = $"{base.HttpContext.User.Identity!.Name}_{file.FileName}";
+
+            destinationVehicleImagePath = $"wwwroot/Images/{filename}";
+
+            using var fileStream = System.IO.File.Create(destinationVehicleImagePath);
+
+            await file.CopyToAsync(fileStream);
+        }
     }
 }

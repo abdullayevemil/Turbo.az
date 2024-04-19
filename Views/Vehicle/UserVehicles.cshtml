@@ -15,15 +15,30 @@
 <div class="vehicles-container">
     @foreach (var vehicle in Model)
     {
-        <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@vehicle.Id">
-            <div class="vehicle-info">
-                @if (@vehicle.ImageUrl is not null)
-                {
-                    <img src="@vehicle.ImageUrl" alt="image of car" />
-                }
-                <p><b><i>@vehicle.BrandName @vehicle.ModelName</i></b></p>
-                <p><i>@vehicle.Price$, @vehicle.EngineVolume sm<sup>3</sup></i></p>
+        <div class="vehicle-info" id="@vehicle.Id">
+            <div>
+                <a asp-controller="Vehicle" asp-action="Details" asp-route-id="@vehicle.Id">
+                    <div>
+                        @if (@vehicle.FirstImageUrl is not null)
+                        {
+                            <img src="~/@vehicle.FirstImageUrl" alt="image of car" />
+                        }
+                        <p><b><i>@vehicle.BrandName @vehicle.ModelName</i></b></p>
+                        <p><i>@vehicle.Price$, @vehicle.EngineVolume sm<sup>3</sup></i></p>
+                    </div>
+                </a>
             </div>
-        </a>
+            <br>
+            <div>
+                <a class="link" asp-controller="Vehicle" asp-action="Update" asp-route-id="@vehicle.Id">
+                    <i class="fa fa-refresh" style="font-size:24px"></i>
+                </a>
+                <a class="link" onclick="deleteVehicle(@vehicle.Id)" id="delete-vehicle-link">
+                    <i class="fa fa-trash" style="font-size:24px"></i>
+                </a>
+            </div>
+        </div>
     }
 </div>
+
+<script src="~/js/vehicle-operations.js"></script>

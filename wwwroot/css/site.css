@@ -8,6 +8,14 @@ html {
   }
 }
 
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px;
+}
+
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
@@ -164,7 +172,7 @@ nav.bg-white {
 
 .vehicle-info {
   width: 285px;
-  height: 300px;
+  height: 330px;
   background-color: rgb(19, 24, 36);
   padding: 10px;
   border-radius: 20px;
@@ -213,7 +221,7 @@ img {
 }
 
 body {
-  background-image: url("https://thumbs.dreamstime.com/b/futuristic-ride-uhd-photo-realistic-iso-view-impressive-car-generative-ai-experience-awe-inspiring-world-277106619.jpg");
+  background-image: url("../Wallpaper/Wallpaper.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -264,7 +272,7 @@ a:hover {
 }
 
 .login-header span {
-  font-size: 30px;
+  font-size: 24px;
   color: var(--black-color);
 }
 
@@ -401,7 +409,8 @@ a:hover {
 
 .main-info,
 .user-info,
-.vehicle-details {
+.vehicle-details,
+.user-details {
   background-color: rgba(0, 0, 0, 0.5);
   border-radius: 20px;
   padding: 15px;
@@ -414,7 +423,8 @@ a:hover {
   flex-direction: row;
 }
 
-.vehicle-details > p {
+.vehicle-details > p,
+.user-details > p {
   display: inline;
 }
 
@@ -422,4 +432,153 @@ a:hover {
   width: 600px;
   height: 400px;
   margin-right: 40px;
+}
+
+.user-details {
+  margin: 20px 0;
+}
+
+select {
+  width: 170px;
+  font-size: 22px !important; 
+}
+
+.select-label {
+  margin-left: 120px;
+}
+
+select:nth-of-type(2) {
+  margin-left: 80px;
+}
+
+.submit-button {
+  width: 200px;
+  height: 40px;
+  position: relative;
+  display: inline-block;
+  margin: 8px 0;
+  background-color: transparent;
+  color: #03e9f4 !important;
+  text-decoration: none;
+  transition: 0.5s;
+  overflow: hidden;
+  border: 1px #03e9f4 solid;
+}
+
+.submit-button:hover {
+  background: #03e9f4;
+  color: white !important;
+  box-shadow: 0 0 5px #03e9f4,
+    0 0 25px #03e9f4,
+    0 0 50px #03e9f4,
+    0 0 200px #03e9f4;
+}
+
+.back-link {
+  font-size: 20px;
+}
+
+.back-link:hover {
+  text-decoration: none;
+  color: #03e9f4 !important;
+}
+
+a.link:hover {
+  text-decoration: none;
+  color: #03e9f4 !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Position the image container (needed to position the left and right arrows) */
+.my-container {
+  position: relative;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+  width: 600px;
+  height: 400px;
+}
+
+/* Add a pointer when hovering over the thumbnail images */
+.cursor {
+  cursor: pointer;
+}
+
+/* Next & previous buttons */
+.prev,
+.next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -50px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.prev:hover,
+.next:hover {
+  text-decoration: none;
+  color: #03e9f4 !important;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover,
+.next:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* Container for image text */
+.caption-container {
+  text-align: center;
+  background-color: #222;
+  padding: 2px 16px;
+  color: white;
+}
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Six columns side by side */
+.column {
+  float: left;
+  width: 16.66%;
+}
+
+/* Add a transparency effect for thumnbail images */
+.demo {
+  opacity: 0.6;
+}
+
+.active,
+.demo:hover {
+  opacity: 1;
 }

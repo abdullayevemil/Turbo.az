@@ -1,5 +1,7 @@
 ﻿@{
     bool isAuthenticated = base.User.Identity.IsAuthenticated;
+
+    bool isAdmin = base.User.IsInRole("Admin");
 }
 
 <!DOCTYPE html>
@@ -11,7 +13,11 @@
     <title>@ViewData["Title"] - Turbo.az</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Turbo.az.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -40,17 +46,32 @@
                                     <span></span>
                                     <span></span>
                                     Home
+                                    <i class="material-icons">home</i>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="Index">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    Vehicles
-                                </a>
-                            </li>
+                            @if (isAdmin)
+                            {
+                                <li class="nav-item">
+                                    <a class="neon nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        Users
+                                        <i class="material-icons">&#xe7ef;</i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="neon nav-link text-dark" asp-area="" asp-controller="SiteManagement" asp-action="UploadWallpaper">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                        Site Management
+                                        <i class="fa fa-gear fa-spin" style="font-size:24px"></i>
+                                    </a>
+                                </li>
+                            }
                         }
                         else
                         {
@@ -61,9 +82,20 @@
                                     <span></span>
                                     <span></span>
                                     Login
+                                    <i class="material-icons">&#xe7fe;</i>
                                 </a>
                             </li>
                         }
+                        <li class="nav-item">
+                                <a class="neon nav-link text-dark" asp-area="" asp-controller="Vehicle" asp-action="Index">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    Vehicles
+                                    <i class="material-icons">directions_car</i>
+                                </a>
+                            </li>
                     </ul>
 
                     @if (isAuthenticated)
@@ -74,6 +106,7 @@
                             <span></span>
                             <span></span>
                             @ViewData["Username"]
+                            <i class="material-icons">person</i>
                         </a>
                         <a id="logout-link" class="neon nav-link text-dark" asp-area="">
                             <span></span>
@@ -81,6 +114,7 @@
                             <span></span>
                             <span></span>
                             LogOut
+                            <i style="font-size:24px" class="fa">&#xf08b;</i>
                         </a>
                     }
                 </div>
@@ -91,17 +125,21 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+        <br>
     </div>
+    <br>
+    <br>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2024 - Turbo.az
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 
 </html>
